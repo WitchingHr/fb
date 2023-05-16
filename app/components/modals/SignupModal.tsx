@@ -25,7 +25,8 @@ const SignupModal = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<FieldValues>({
     defaultValues: {
       firstName: '',
@@ -45,6 +46,10 @@ const SignupModal = () => {
       .then(() => {
         // toast success
         toast.success('Account created');
+
+        // reset form
+        reset();
+
         // close modal
         signupModal.onClose();
       })

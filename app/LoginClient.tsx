@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // hooks
 import useSignupModal from "./hooks/useSignupModal";
@@ -9,10 +11,14 @@ import useSignupModal from "./hooks/useSignupModal";
 // components
 import Button from "./components/Button";
 import Input from "./components/inputs/Input";
+import { toast } from "react-hot-toast";
 
 // Login Client
 // login page for client, includes login form and signup modal
 const LoginClient = () => {
+  // router
+  const router = useRouter();
+
   // view state, open/close modal
   const signupModal = useSignupModal();
 
@@ -35,13 +41,30 @@ const LoginClient = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsSending(true);
 
-    // send data to server
-    console.log(data);
+    // authenticate user
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    }).then((res) => {
+      setIsSending(false);
 
+      if (res?.ok) {
+        // toast success
+        toast.success('Logged in successfully');
+
+        // refresh page
+        router.refresh();
+      }
+
+      if (res?.error) {
+        // toast error
+        toast.error(res.error);
+      }
+    });
   };
 
   return (
-    <div className="pt-6 md:pt-36">
+    <div className="flex flex-col h-screen pt-6 md:pt-36">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:max-w-[1024px] mx-auto">
 
         {/* logo and subheading */}
@@ -78,6 +101,9 @@ const LoginClient = () => {
           {/* open signup modal */}
           <Button label="Create New Account" onClick={signupModal.onOpen} secondary />
         </div>
+      </div>
+      <div className="mt-auto text-center text-neutral-300">
+        <a href="http://github.com/WitchingHr/fb" target="_blank">WitchingHr</a>
       </div>
     </div>
   );

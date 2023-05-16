@@ -1,5 +1,9 @@
 "use client";
 
+// dependencies
+import { useEffect, useState } from "react";
+
+// components
 import Button from "../Button";
 
 // props
@@ -28,6 +32,13 @@ const Modal: React.FC<ModalProps> = ({
 	body,
 	footer,
 }) => {
+  // modal state
+  const [showModal, setShowModal] = useState(isOpen);
+
+  // animade slide in on modal open
+  useEffect(() => {
+    setShowModal(isOpen);
+  }, [isOpen]);
 
   // don't render if modal is closed
 	if (!isOpen) {
@@ -41,34 +52,35 @@ const Modal: React.FC<ModalProps> = ({
       {/* modal */}
 			<div
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-        className="flex flex-col pb-4 bg-white h-screen w-screen sm:max-w-[400px]
-        sm:h-min sm:rounded sm:mt-24 shadow-xl mx-auto"
+        className={`flex flex-col pb-4 bg-white h-screen w-screen sm:max-w-[400px]
+        sm:h-min sm:rounded sm:mt-24 shadow-xl mx-auto duration-300
+        ${showModal ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
       >
-				<div className="flex justify-between px-4 py-3 border-b border-neutral-300">
-
+        <div className="flex justify-between px-4 py-3 border-b border-neutral-300">
+        
           {/* heading */}
-					<div className="flex flex-col gap-1">
-						<h1 className="text-3xl font-bold">{title}</h1>
-						<h2 className="text-neutral-500">{subtitle}</h2>
-					</div>
-
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl font-bold">{title}</h1>
+            <h2 className="text-neutral-500">{subtitle}</h2>
+          </div>
+        
           {/* close modal button */}
-					<button
-						onClick={onClose}
-						className="mb-auto text-4xl text-neutral-500"
-					>
-						×
-					</button>
-				</div>
-
+          <button
+            onClick={onClose}
+            className="mb-auto text-4xl text-neutral-500"
+          >
+            ×
+          </button>
+        </div>
+        
         {/* modal body */}
-				<div className="p-4">{body}</div>
-
+        <div className="p-4">{body}</div>
+        
         {/* modal footer */}
-				<div>{footer}</div>
-
+        <div>{footer}</div>
+        
         {/* submit button */}
-				<Button label={actionLabel} disabled={disabled} onClick={onSubmit} secondary />
+        <Button label={actionLabel} disabled={disabled} onClick={onSubmit} secondary />
 			</div>
 		</div>
 	);

@@ -45,11 +45,13 @@ const Input: React.FC<InputProps> = ({
 
       {/* label, animates on input focus */}
       <label
+        htmlFor={id}
         className={`absolute top-3 left-4 
         -translate-y-3 text-md origin-[0] transition
         peer-placeholder-shown:scale-100
         peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-4
+        select-none
         ${errors[id] ? 'text-red-500' : 'text-neutral-400'}`}
       >
         {/* label = error message || label prop */}
