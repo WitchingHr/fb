@@ -1,3 +1,5 @@
+import { Toaster } from 'react-hot-toast';
+import SignupModal from './components/modals/SignupModal';
 import './globals.css'
 import { Roboto } from 'next/font/google'
 
@@ -15,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <Toaster />
+        <SignupModal />
+        {children}
+      </body>
     </html>
   );
 }

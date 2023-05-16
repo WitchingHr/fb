@@ -6,6 +6,7 @@ interface ContainerProps {
 }
 
 // Container
+// wrapper component for page content
 const Container: React.FC<ContainerProps> = ({ children }) => {
   return (
     <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 xl:px-20">

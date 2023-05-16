@@ -7,14 +7,14 @@ interface InputProps {
   id: string;
   type?: string;
   label?: string;
-  placeholder?: string;
   required?: boolean;
-  disabled: boolean;
+  disabled?: boolean;
   register: UseFormRegister<FieldValues>;
-  errors?: FieldErrors;
+  errors: FieldErrors;
 }
 
 // Input
+// custom input component for react-hook-form
 const Input: React.FC<InputProps> = ({
   id,
   type = 'text',
@@ -22,28 +22,38 @@ const Input: React.FC<InputProps> = ({
   required,
   disabled,
   register,
-  errors
+  errors,
 }) => {
   return (
     <div className="relative">
       <input
         id={id}
         type={type}
-        placeholder=" "
+        placeholder=" " // placeholder for label animation
+        maxLength={
+          id === 'firstName' || id === 'lastName' ? 50 :
+          id === 'email' ? 254 :
+          id === 'password' ? 16 : undefined
+        }
+        minLength={id === 'password' ? 4 : undefined}
         disabled={disabled}
-        {...register(id, { required: required })}
+        {...register(id, { required })}
         className={
-          `peer px-4 py-4 border w-full rounded
-          ${errors?.[id] ? 'border-red-500' : 'border-neutral-200'}}`}
+          `peer p-4 pt-6 border w-full rounded
+          ${errors[id] ? 'border-red-500 focus:border-red-500' : 'border-neutral-200'}}`}
       />
+
+      {/* label, animates on input focus */}
       <label
-        className="absolute top-3 left-4 text-neutral-400
+        className={`absolute top-3 left-4 
         -translate-y-3 text-md origin-[0] transition
         peer-placeholder-shown:scale-100
         peer-placeholder-shown:translate-y-0
-        peer-focus:scale-75 peer-focus:-translate-y-4"
+        peer-focus:scale-75 peer-focus:-translate-y-4
+        ${errors[id] ? 'text-red-500' : 'text-neutral-400'}`}
       >
-        {label}
+        {/* label = error message || label prop */}
+        {errors[id] ? `${label} required` : label}
       </label>
     </div>
   );

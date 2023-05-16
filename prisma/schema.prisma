@@ -11,30 +11,103 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  email          String    @unique
-  name           String
-  hashedPassword String
-  image          String?
-  posts          Post[]
-  Comment        Comment[]
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // auth
+  email             String    @unique
+  name              String
+  hashedPassword    String
+
+  // profile
+  profile           Profile?
+
+  // user content
+  posts             Post[]
+  comments          Comment[]
+  likes             Like[]
+
+  // friends of user
+  friends           User[]   @relation("friends", fields: [friendsIds], references: [id])
+  friendsIds        String[] @db.ObjectId
+
+  // user is friend of
+  friendOf          User[]   @relation("friends", fields: [friendOfIds], references: [id])
+  friendOfIds       String[] @db.ObjectId
+
+  // friend requests
+  requestsSent      FriendRequest[] @relation("author")
+  requestsReceived  FriendRequest[] @relation("recipient")
+}
+
+model Profile {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // profile content
+  bio     String?
+  image   String?
+
+  // profile owner
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String   @db.ObjectId @unique
 }
 
 model Post {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String    @db.ObjectId
-  createdAt DateTime  @default(now())
-  comments  Comment[]
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // post content
+  content     String
+  comments    Comment[]
+  likes       Like[]
+  createdAt   DateTime  @default(now())
+
+  // post author
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String    @db.ObjectId
 }
 
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // comment content
   content   String
+  likes     Like[]
+  createdAt DateTime @default(now())
+
+  // comment author
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String   @db.ObjectId
+
+  // comment location
   post      Post     @relation(fields: [postId], references: [id])
   postId    String   @db.ObjectId
-  createdAt DateTime @default(now())
+}
+
+model Like {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // like author
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String    @db.ObjectId
+
+  // like location
+  post      Post?     @relation(fields: [postId], references: [id])
+  postId    String?   @db.ObjectId
+  comment   Comment?  @relation(fields: [commentId], references: [id])
+  commentId String?   @db.ObjectId
+}
+
+model FriendRequest {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // request author
+  author        User      @relation(fields: [authorId], references: [id], name: "author")
+  authorId      String    @db.ObjectId
+
+  // request recipient
+  recipient     User      @relation(fields: [recipientId], references: [id], name: "recipient")
+  recipientId   String    @db.ObjectId
+
+  // request status
+  status        String    @default("pending")
+  accepted      Boolean   @default(false)
 }
