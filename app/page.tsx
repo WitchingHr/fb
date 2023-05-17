@@ -12,12 +12,14 @@ export default async function Home() {
   const currentUser = await getCurrentUser();
   
   return (
-    <Container>
+    <>
       {currentUser ? (
         <HomeClient currentUser={currentUser} />
       ) : (
-        <LoginClient />
+        <Container>
+          <LoginClient />
+        </Container>
       )}
-    </Container>
+    </>
   );
 }
