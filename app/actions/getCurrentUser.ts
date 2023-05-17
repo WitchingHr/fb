@@ -23,6 +23,9 @@ export default async function getCurrentUser() {
       where: {
         email: session.user.email as string,
       },
+      include: {
+        profile: true,
+      },
     });
 
     // if user not found, return null
