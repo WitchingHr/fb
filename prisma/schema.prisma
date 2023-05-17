@@ -15,8 +15,8 @@ model User {
 
   // auth
   email             String    @unique
-  name              String
   hashedPassword    String
+  name              String
 
   // profile
   profile           Profile?

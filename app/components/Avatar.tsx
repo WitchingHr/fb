@@ -1,11 +1,12 @@
 "use client"
 
-import { Profile, User } from "@prisma/client";
+import { Profile } from "@prisma/client";
 import Image from "next/image";
+import { SafeUser } from "../types/types";
 
 // props
 interface AvatarProps {
-  currentUser: User & {
+  currentUser: SafeUser & {
     profile: Profile | null;
   };
   size: number
@@ -19,7 +20,7 @@ const Avatar: React.FC<AvatarProps> = ({
 }) => {
   return (
     <Image
-      src={currentUser.profile!.image || '/images/placeholder.jpg'}
+      src={currentUser.profile?.image || '/images/placeholder.jpg'}
       alt="profile picture"
       className="object-cover rounded-full aspect-square"
       width={size}

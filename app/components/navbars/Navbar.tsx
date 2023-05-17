@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { ImSearch } from "react-icons/im";
 import { IoMdNotifications } from "react-icons/io";
-import { Profile, User } from "@prisma/client";
+import { Profile } from "@prisma/client";
 
 import Avatar from "../Avatar";
+import useUserMenuModal from "@/app/hooks/useUserMenuModal";
+import UserMenu from "../menus/UserMenu";
+import { SafeUser } from "@/app/types/types";
 
 // props
 interface NavbarProps {
-  currentUser: User & {
+  currentUser: SafeUser & {
     profile: Profile | null;
   };
 }
@@ -19,8 +22,19 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({
   currentUser,
 }) => {
+  // user menu modal view state
+  const userMenu = useUserMenuModal();
+  // open/close user menu
+  const handleMenu = () => {
+    if (userMenu.isOpen) {
+      userMenu.onClose();
+    } else {
+      userMenu.onOpen();
+    }
+  };
+
   return (
-    <div className="z-10 flex flex-row items-center px-4 py-2 bg-white border-b shadow-sm md:justify-between border-neutral-300">
+    <div className="z-50 flex flex-row items-center px-4 py-2 bg-white border-b shadow-sm md:justify-between border-neutral-300">
       <Link href="/">
         <h1 className="text-3xl font-bold text-[#1a77f2]">facebook</h1>
       </Link>
@@ -35,7 +49,10 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-200">
           <IoMdNotifications size={26} />
         </div>
-        <Avatar currentUser={currentUser} size={40} />
+        <button onClick={handleMenu} className="relative">
+          <Avatar currentUser={currentUser} size={40} />
+          <UserMenu currentUser={currentUser} isOpen={userMenu.isOpen} />
+        </button>
       </div>
     </div>
   );

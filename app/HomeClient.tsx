@@ -1,6 +1,6 @@
 "use client"
 
-import { Profile, User } from "@prisma/client";
+import { Profile } from "@prisma/client";
 
 // components
 import ProfileCreator from "./ProfileCreator";
@@ -8,10 +8,11 @@ import Navbar from "./components/navbars/Navbar";
 import Sidebar from "./components/navbars/Sidebar";
 import PostPrompt from "./components/posts/PostPrompt";
 import Sponsored from "./components/Sponsored";
+import { SafeUser } from "./types/types";
 
 // props
 interface HomeClientProps {
-  currentUser: User & {
+  currentUser: SafeUser & {
     profile: Profile | null;
   };
 }
@@ -35,7 +36,7 @@ const HomeClient: React.FC<HomeClientProps> = ({
         <Sidebar currentUser={currentUser} />
 
         {/* post wall */}
-        <div className="flex flex-col gap-2 max-w-[680px] grow shrink-0 mx-2">
+        <div className="flex flex-col gap-2 max-w-[680px] grow shrink-0 mx-2 py-4">
           <PostPrompt currentUser={currentUser} />
         </div>
 

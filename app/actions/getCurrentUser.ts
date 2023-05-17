@@ -33,8 +33,11 @@ export default async function getCurrentUser() {
       return null;
     }
 
+    // remove auth data from user object
+    const { email, hashedPassword, ...safeUser } = currentUser;
+
     // return user
-    return currentUser;
+    return safeUser;
 
   } catch (error) {
     // if error, return null

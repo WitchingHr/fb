@@ -1,7 +1,6 @@
 "use client"
 
 import { FieldValues, useForm } from "react-hook-form";
-import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -11,10 +10,11 @@ import { toast } from "react-hot-toast";
 import Button from "./components/Button";
 import Input from "./components/inputs/Input";
 import ImageUpload from "./components/inputs/ImageUpload";
+import { SafeUser } from "./types/types";
 
 // props
 interface ProfileCreatorProps {
-  currentUser: User;
+  currentUser: SafeUser;
 }
 
 // steps for profile creator

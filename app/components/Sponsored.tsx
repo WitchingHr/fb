@@ -8,7 +8,9 @@ const Sponsored = () => {
   return (
     <>
       <div className="pl-2">Sponsored</div>
-      <a href="https://witchinghr.dev"
+      <a
+        href="https://witchinghr.dev"
+        target="_blank"
         className="flex flex-row items-center gap-2 p-2 transition duration-300 rounded-md hover:bg-neutral-200"
       >
         <Image
