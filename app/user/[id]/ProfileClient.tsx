@@ -2,13 +2,14 @@
 
 import Navbar from "@/app/components/navbars/Navbar";
 import { Post, Profile } from "@prisma/client";
-import { SafeUser } from "@/app/types/types";
+import { SafePost, SafeUser } from "@/app/types/types";
 import Sidebar from "@/app/components/navbars/Sidebar";
 import Avatar from "@/app/components/Avatar";
 import { MdModeEditOutline } from "react-icons/md";
 import { useState } from "react";
 import PostPrompt from "@/app/components/posts/PostPrompt";
 import Intro from "@/app/components/profile/Intro";
+import PostCard from "@/app/components/posts/PostCard";
 
 interface ProfileClientProps {
   profile: SafeUser & {
@@ -18,19 +19,21 @@ interface ProfileClientProps {
   currentUser: SafeUser & {
     profile: Profile | null;
   };
+  posts: SafePost[] | null;
 }
 
 const ProfileClient: React.FC<ProfileClientProps> = ({
   profile,
   currentUser,
+  posts
 }) => {
   const [selected, setSelected] = useState<String>("Posts");
   return (
     <div className="flex flex-col h-screen">
       <Navbar currentUser={currentUser} />
-      <div className="flex flex-row flex-1 overflow-y-auto">
+      <div className="flex flex-row flex-1 overflow-hidden">
         <Sidebar currentUser={currentUser} profile />
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 overflow-y-auto">
 
           {/* upper */}
           <div className="z-10 bg-white border-b shadow-sm border-neutral-300">
@@ -112,8 +115,11 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
               </div>
 
               {/* right */}
-              <div className="flex-1">
+              <div className="flex flex-col flex-1 gap-4">
                 <PostPrompt currentUser={currentUser} />
+                {posts?.map((post) => (
+                  <PostCard post={post} key={post.id} />
+                ))}
               </div>
               
             </div>

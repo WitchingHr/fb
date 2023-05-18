@@ -34,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <div className="z-50 flex flex-row items-center px-4 py-2 bg-white border-b shadow-sm md:justify-between border-neutral-300">
+    <div className="z-40 flex flex-row items-center px-4 py-2 bg-white border-b shadow-sm md:justify-between border-neutral-300">
       <Link href="/">
         <h1 className="text-3xl font-bold text-[#1a77f2]">facebook</h1>
       </Link>

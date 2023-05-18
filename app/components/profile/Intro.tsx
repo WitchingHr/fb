@@ -3,6 +3,7 @@
 import { Profile } from "@prisma/client";
 import { MdHome, MdOutlineWork } from "react-icons/md";
 import { IoSchool } from "react-icons/io5";
+import { BsFillPersonLinesFill } from "react-icons/bs";
 
 interface IntroProps {
   profile: Profile;
@@ -37,6 +38,14 @@ const Intro: React.FC<IntroProps> = ({
           <span className="font-medium"> {profile.education}</span>
         </div>
       </div>
+
+      <div className="flex gap-2">
+        <BsFillPersonLinesFill size={20} className="text-neutral-500" />
+        <div className="font-light">
+          {profile.bio}
+        </div>
+      </div>
+
     </div>
   );
 };
