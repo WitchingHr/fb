@@ -1,21 +1,34 @@
 "use client"
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 // hooks
 import useSignupModal from "../hooks/useSignupModal";
+import { UserContext } from "../providers/UserProvider";
 
 // components
 import Button from "../components/Button";
 import Input from "../components/inputs/Input";
-import { toast } from "react-hot-toast";
 
 // Login Client
 // login page for client, includes login form and signup modal
 const LoginClient = () => {
+  // user context
+  const { setUser } = useContext(UserContext);
+
+  // reset user
+  useEffect(() => {
+    setUser({
+      id: "",
+      name: "",
+      image: ""
+    });
+  }, [setUser]);
+
   // router
   const router = useRouter();
 

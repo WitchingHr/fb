@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 
 import { Posts, UserProfile, SafeUser } from "@/app/types";
+import { UserContext } from "@/app/providers/UserProvider";
 
 // components
 import Sidebar from "@/app/components/navbars/Sidebar";
@@ -27,12 +28,17 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
   currentUser,
   posts
 }) => {
-  // current user avatar
-  const currentUserAvatar = {
-    id: currentUser.id,
-    name: currentUser.name,
-    image: currentUser.profile?.image
-  };
+  // user context
+  const { setUser } = useContext(UserContext);
+
+  // set current user
+  useEffect(() => {
+    setUser({
+      id: currentUser.id,
+      name: currentUser.name,
+      image: currentUser.profile?.image
+    });
+  }, [currentUser.id, currentUser.name, currentUser.profile?.image, setUser]);
 
   // profile user avatar
   const userAvatar = {
@@ -46,9 +52,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar currentUser={userAvatar} />
+      <Navbar />
       <div className="flex flex-row flex-1 overflow-hidden">
-        <Sidebar currentUser={userAvatar} profile />
+        <Sidebar profile />
         <div className="flex flex-col flex-1 overflow-y-auto">
 
           {/* upper */}
@@ -132,9 +138,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
 
               {/* right */}
               <div className="flex flex-col flex-1 gap-4">
-                <PostPrompt currentUser={currentUserAvatar} />
+                <PostPrompt />
                 {posts?.map((post) => (
-                  <PostCard post={post} key={post.id} currentUser={currentUserAvatar} />
+                  <PostCard post={post} key={post.id} />
                 ))}
               </div>
               

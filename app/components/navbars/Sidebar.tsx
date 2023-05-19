@@ -1,25 +1,27 @@
 "use client"
 
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { MdHome } from "react-icons/md";
+
+import { UserContext } from "@/app/providers/UserProvider";
 
 // components
 import Avatar from "../Avatar";
-import { User } from "@/app/types";
 
 // props
 interface SidebarProps {
-  currentUser: User;
   profile?: boolean; // true if on profile page
 }
 
 // Sidebar
 // links to home and profile pages
 const Sidebar: React.FC<SidebarProps> = ({
-  currentUser,
   profile = false,
 }) => {
+  // get user
+  const { user } = useContext(UserContext);
+
   // selected link, for displaying active link
   const [selected, setSelected] = useState<String>(profile ? 'User' : 'Home');
 
@@ -45,16 +47,16 @@ const Sidebar: React.FC<SidebarProps> = ({
       </Link>
 
       {/* user */}
-      <Link href={`/user/${currentUser.id}`} onClick={() => setSelected('User')}
+      <Link href={`/user/${user.id}`} onClick={() => setSelected('User')}
         className={`relative flex flex-row items-center gap-2 p-2 rounded-md hover:bg-neutral-200
           duration-300 transition cursor-pointer
           ${selected === 'User' ? 'sidebar-selected' : ''}
         `}
       >
-        <Avatar user={currentUser} size={26} />
+        <Avatar user={user} size={26} />
         <div className={`hidden lg:block
           ${profile ? 'lg:!hidden' : ''}
-        `}>{currentUser.name}</div>
+        `}>{user.name}</div>
       </Link>
 
       <hr className="border-neutral-300" />

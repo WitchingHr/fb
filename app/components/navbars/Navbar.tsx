@@ -3,26 +3,24 @@
 import Link from "next/link";
 import { ImSearch } from "react-icons/im";
 import { IoMdNotifications } from "react-icons/io";
+import { useContext } from "react";
 
+import { UserContext } from "@/app/providers/UserProvider";
 import useUserMenuModal from "@/app/hooks/useUserMenuModal";
 
 // components
 import Avatar from "../Avatar";
 import UserMenu from "../menus/UserMenu";
-import { User } from "@/app/types";
-
-// props
-interface NavbarProps {
-  currentUser: User;
-}
 
 // Navbar
 // displays logo, search bar, notifications, and profile picture
-const Navbar: React.FC<NavbarProps> = ({
-  currentUser,
-}) => {
+const Navbar = () => {
+  // get user
+  const { user } = useContext(UserContext);
+
   // user menu modal view state
   const userMenu = useUserMenuModal();
+
   // open/close user menu
   const handleMenu = () => {
     if (userMenu.isOpen) {
@@ -49,8 +47,8 @@ const Navbar: React.FC<NavbarProps> = ({
           <IoMdNotifications size={26} />
         </div>
         <button onClick={handleMenu} className="relative">
-          <Avatar user={currentUser} size={40} />
-          <UserMenu currentUser={currentUser} isOpen={userMenu.isOpen} />
+          <Avatar user={user} size={40} />
+          <UserMenu currentUser={user} isOpen={userMenu.isOpen} />
         </button>
       </div>
     </div>

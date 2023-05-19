@@ -1,29 +1,32 @@
 "use client"
 
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { BiLike } from "react-icons/bi";
 import { VscComment } from "react-icons/vsc";
+import Link from "next/link";
+
+import { UserContext } from "@/app/providers/UserProvider";
+import { Post } from "@/app/types";
 
 // components
 import Avatar from "../Avatar";
-import { Post, User } from "@/app/types";
-import Link from "next/link";
 
 // props
 interface PostCardProps {
   post: Post;
-  currentUser: User;
 }
 
 // PostCard
 // shows a single post
 const PostCard: React.FC<PostCardProps> = ({
   post,
-  currentUser
 }) => {
+  // get current user
+  const { user } = useContext(UserContext);
+
   // router
   const router = useRouter();
 
@@ -67,7 +70,6 @@ const PostCard: React.FC<PostCardProps> = ({
     const data = {
       postId: post.id,
       content: comment,
-      author: currentUser.id
     }
 
     // send request
@@ -86,6 +88,42 @@ const PostCard: React.FC<PostCardProps> = ({
         // reset state
         setLoading(false);
         setComment("");
+      });
+  }
+
+  // like post
+  const likePost = async () => {
+    // check if already submitting
+    if (loading) return;
+    setLoading(true);
+
+    const data = {
+      postId: post.id,
+    }
+
+    // send request
+    const res = await axios.post("/api/like", data)
+      .then((res) => {
+        // get response status code
+        const response = res.data;
+
+        // toast
+        if (response.status === 201) {
+          toast.success("Post liked");
+        } else if (response.status === 204) {
+          toast.success("Post unliked");
+        }
+
+        // refresh page
+        router.refresh();
+      })
+      .catch((err) => {
+        // error
+        toast.error(err.response.data);
+      })
+      .finally(() => {
+        // reset state
+        setLoading(false);
       });
   }
 
@@ -135,7 +173,10 @@ const PostCard: React.FC<PostCardProps> = ({
 
         {/* like and comment buttons */}
         <div className="flex justify-around text-xl text-neutral-500">
-          <button className={`flex items-center gap-2 px-4 py-2 rounded-md 
+          <button
+            onClick={likePost}
+            disabled={loading}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md 
             hover:bg-neutral-100 focus:outline-none focus:bg-neutral-100`}
           >
             <BiLike size={20} />
@@ -194,7 +235,7 @@ const PostCard: React.FC<PostCardProps> = ({
           >
             {viewComment && (
               <>
-                <Avatar user={currentUser} size={36} button />
+                <Avatar user={user} size={36} button />
                 <input
                   onKeyDown={(e) => {submitComment(e)}}
                   onChange={(e) => {setComment(e.target.value)}}

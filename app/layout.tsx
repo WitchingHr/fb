@@ -3,6 +3,7 @@ import SignupModal from './components/modals/SignupModal';
 import './globals.css'
 import { Roboto } from 'next/font/google'
 import PostModal from './components/modals/PostModal';
+import UserProvider from './providers/UserProvider';
 
 const font = Roboto({ weight: ['100', '300', '400', '500', '700', '900'], subsets: ['latin'] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
         <Toaster />
         <SignupModal />
         <PostModal  />
-        {children}
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

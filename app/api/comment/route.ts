@@ -1,23 +1,27 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/lib/dbConnect";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 // create a new comment on a post
 export async function POST(req: Request) {
   try {
-    // get data from request
-    const { content, postId, author } = await req.json();
+    // get current user
+    const user = await getCurrentUser();
 
-    // if no author, user is not logged in, redirect to login
-    if (!author) {
+    // if user is not logged in, redirect to home page
+    if (!user) {
       return NextResponse.redirect("/");
     }
+
+    // get data from request
+    const { content, postId } = await req.json();
 
     // Create a new comment
     const comment = await prisma.comment.create({
       data: {
         content,
         postId,
-        authorId: author,
+        authorId: user.id,
       },
     });
 

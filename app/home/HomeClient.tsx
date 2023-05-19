@@ -9,6 +9,8 @@ import Sidebar from "../components/navbars/Sidebar";
 import PostPrompt from "../components/posts/PostPrompt";
 import Sponsored from "../components/Sponsored";
 import PostCard from "../components/posts/PostCard";
+import { useContext, useEffect } from "react";
+import { UserContext } from "../providers/UserProvider";
 
 // props
 interface HomeClientProps {
@@ -22,6 +24,18 @@ const HomeClient: React.FC<HomeClientProps> = ({
   currentUser,
   posts
 }) => {
+  // user context
+  const { user, setUser } = useContext(UserContext);
+
+  // set user
+  useEffect(() => {
+    setUser({
+      id: currentUser.id,
+      name: currentUser.name,
+      image: currentUser.profile?.image
+    });
+  }, [currentUser.id, currentUser.name, currentUser.profile?.image, setUser]);
+
   // if user has no profile, show profile creator
   if (!currentUser.profile) {
     return <ProfileCreator currentUser={currentUser} />;
@@ -36,15 +50,15 @@ const HomeClient: React.FC<HomeClientProps> = ({
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar currentUser={userAvatar} />
+      <Navbar />
 
       <div className="flex flex-row justify-between h-full">
         {/* sidebar */}
-        <Sidebar currentUser={userAvatar} />
+        <Sidebar />
 
         {/* post wall */}
         <div className="flex flex-col gap-2 max-w-[680px] grow shrink-0 mx-2 py-4">
-          <PostPrompt currentUser={userAvatar} />
+          <PostPrompt />
 
           {posts === null ? (
             // no posts
@@ -52,7 +66,7 @@ const HomeClient: React.FC<HomeClientProps> = ({
           ) : (
             // iterate posts
             posts.map((post) => (
-              <PostCard key={post.id} post={post} currentUser={userAvatar} />
+              <PostCard key={post.id} post={post} />
             ))
           )}
         </div>
