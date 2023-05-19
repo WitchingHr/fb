@@ -73,15 +73,14 @@ model Comment {
 
   // comment content
   content   String
-  likes     Like[]
   createdAt DateTime @default(now())
 
   // comment author
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String   @db.ObjectId
 
-  // comment location
-  post      Post     @relation(fields: [postId], references: [id])
+  // commented post
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String   @db.ObjectId
 }
 
@@ -92,11 +91,9 @@ model Like {
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String    @db.ObjectId
 
-  // like location
-  post      Post?     @relation(fields: [postId], references: [id])
+  // liked post
+  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String?   @db.ObjectId
-  comment   Comment?  @relation(fields: [commentId], references: [id])
-  commentId String?   @db.ObjectId
 }
 
 model FriendRequest {

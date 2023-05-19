@@ -52,6 +52,9 @@ const LoginClient = () => {
 
   // form submit
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (isSending) return;
+
+    // disable button
     setIsSending(true);
 
     // authenticate user
@@ -59,7 +62,6 @@ const LoginClient = () => {
       ...data,
       redirect: false,
     }).then((res) => {
-      setIsSending(false);
 
       if (res?.ok) {
         // toast success
@@ -73,7 +75,10 @@ const LoginClient = () => {
         // toast error
         toast.error(res.error);
       }
-    });
+    }).finally(() => {
+      // re-enable button
+      setIsSending(false)
+  });
   };
 
   return (
@@ -107,7 +112,7 @@ const LoginClient = () => {
               disabled={isSending}
               required
             />
-            <Button label="Log In" submit />
+            <Button disabled={isSending}  label="Log In" submit />
           </form>
           <hr />
 

@@ -53,9 +53,12 @@ const UserMenu: React.FC<UserMenuProps> = ({
   return (
     <>
       {isOpen && (
-        <ul ref={menuRef} onClick={(e) => e.stopPropagation()} className="absolute top-[55px] right-0 flex w-[300px] flex-col gap-2 p-4 bg-white rounded-md shadow-lg">
+        <ul ref={menuRef} onClick={(e) => e.stopPropagation()}
+          className={`absolute top-[55px] right-0 flex w-[300px] border border-neutral-300
+            flex-col gap-2 p-4 bg-white rounded-md shadow-lg`}>
           <div onClick={handleGoToProfile} className="p-1 border rounded-md shadow-md border-neutral-300">
-            <div className="flex flex-row items-center gap-2 p-3 transition duration-300 rounded-md hover:bg-neutral-200">
+            <div className={`flex flex-row items-center gap-2 p-3
+              duration-300 rounded-md hover:bg-neutral-200`}>
               <Avatar user={currentUser} size={36} />
               <div>{currentUser.name}</div>
             </div>

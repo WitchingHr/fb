@@ -4,15 +4,17 @@ import { useContext, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { BiLike } from "react-icons/bi";
+import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { VscComment } from "react-icons/vsc";
 import Link from "next/link";
+import { GoKebabHorizontal } from "react-icons/go";
 
 import { UserContext } from "@/app/providers/UserProvider";
 import { Post } from "@/app/types";
 
 // components
 import Avatar from "../Avatar";
+import PostMenu from "../menus/PostMenu";
 
 // props
 interface PostCardProps {
@@ -51,6 +53,13 @@ const PostCard: React.FC<PostCardProps> = ({
       inputRef.current?.focus();
     }, 100);
   };
+
+  // post menu state
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handlePostMenu = () => {
+    setIsOpen(!isOpen);
+  }
 
   // comment state
   const [comment, setComment] = useState<string>("");
@@ -141,6 +150,18 @@ const PostCard: React.FC<PostCardProps> = ({
             <Link href={`/user/${post.author.id}`} className="text-lg hover:underline">{post.author.name}</Link>
             <div className="text-sm font-light text-neutral-500">{post.createdAt}</div>
           </div>
+
+          {/* post menu button */}
+          {post.author.id === user.id && (
+            <div className="relative ml-auto">
+              <button
+                onClick={handlePostMenu}
+                className="p-1 duration-300 rounded-full text-neutral-500 hover:bg-neutral-100">
+                <GoKebabHorizontal size={20} />
+              </button>
+              <PostMenu isOpen={isOpen} setIsOpen={setIsOpen} postId={post.id} />
+            </div>
+          )}
         </div>
 
         {/* post content */}
@@ -151,7 +172,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {/* likes count */}
             {post.likes.length > 0 && (
               <div className="flex items-center gap-1 pb-1 mr-auto">
-                <BiLike size={12} />
+                <AiOutlineLike size={12} />
                 <div className="text-sm text-neutral-500">
                   {post.likes.length}
                 </div>
@@ -176,15 +197,24 @@ const PostCard: React.FC<PostCardProps> = ({
           <button
             onClick={likePost}
             disabled={loading}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md 
+            className={`flex items-center gap-2 px-4 py-2 rounded-md duration-300
             hover:bg-neutral-100 focus:outline-none focus:bg-neutral-100`}
           >
-            <BiLike size={20} />
-            <div>Like</div>
+            {post.likes.some((like) => like.author.id === user.id) ? (
+              <>
+                <AiFillLike size={20} />
+                <div>Liked</div>
+              </>
+            ) : (
+              <>
+                <AiOutlineLike size={20} />
+                <div>Like</div>
+              </>
+            )}
           </button>
           <button
             onClick={toggleInput}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md
+            className={`flex items-center gap-2 px-4 py-2 rounded-md duration-300
             hover:bg-neutral-100 focus:outline-none focus:bg-neutral-100`}
           >
             <VscComment size={20} />
