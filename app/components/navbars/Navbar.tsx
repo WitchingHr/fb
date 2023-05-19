@@ -3,18 +3,17 @@
 import Link from "next/link";
 import { ImSearch } from "react-icons/im";
 import { IoMdNotifications } from "react-icons/io";
-import { Profile } from "@prisma/client";
 
-import Avatar from "../Avatar";
 import useUserMenuModal from "@/app/hooks/useUserMenuModal";
+
+// components
+import Avatar from "../Avatar";
 import UserMenu from "../menus/UserMenu";
-import { SafeUser } from "@/app/types/types";
+import { User } from "@/app/types";
 
 // props
 interface NavbarProps {
-  currentUser: SafeUser & {
-    profile: Profile | null;
-  };
+  currentUser: User;
 }
 
 // Navbar
@@ -50,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({
           <IoMdNotifications size={26} />
         </div>
         <button onClick={handleMenu} className="relative">
-          <Avatar currentUser={currentUser} size={40} />
+          <Avatar user={currentUser} size={40} />
           <UserMenu currentUser={currentUser} isOpen={userMenu.isOpen} />
         </button>
       </div>

@@ -1,4 +1,5 @@
 import prisma from "../lib/dbConnect";
+import { DateTime } from "luxon";
 
 // get posts by user
 const getPosts = async (id: string) => {
@@ -12,8 +13,9 @@ const getPosts = async (id: string) => {
       },
       take: 5,
       include: {
-        author: {
+        author: { // post author
           select: {
+            id: true,
             name: true,
             profile: {
               select: {
@@ -22,37 +24,93 @@ const getPosts = async (id: string) => {
             },
           },
         },
-        comments: {
-          include: {
+        likes: { // post likes
+          select: {
             author: {
               select: {
+                id: true,
                 name: true,
                 profile: {
                   select: {
                     image: true
-                  }
-                }
-              }
-            }
+                  },
+                },
+              },
+            },
+          },
+        },
+        comments: { // post comments
+          include: {
+            author: {
+              select: {
+                id: true,
+                name: true,
+                profile: {
+                  select: {
+                    image: true
+                  },
+                },
+              },
+            },
           }
         },
       },
     });
 
-    const SafePosts = posts.map((post) => {
-      const { createdAt, ...Post } = post;
+    // sort and sanitize post data
+    const safePosts = posts.map((post) => {
+      // destructure post
+      const { createdAt, comments, likes, author, authorId, ...otherProps } = post;
 
-      const SafePost = {
-        ...Post,
-        createdAt: createdAt.toISOString(),
-      }
+      // post author
+      const postAuthor = {
+        id: author.id,
+        name: author.name,
+        image: author.profile?.image,
+      };
+    
+      // post comments
+      const safeComments = comments.map((comment) => {
+        const { createdAt, authorId, author, ...otherCommentProps } = comment;
 
-      return SafePost;
+        const commentAuthor = {
+          id: author.id,
+          name: author.name,
+          image: author.profile?.image,
+        };
+
+        return {
+          ...otherCommentProps,
+          author: commentAuthor,
+          createdAt: DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED),
+        };
+      });
+
+      // post likes
+      const safeLikes = likes.map((like) => {
+        const { author } = like;
+
+        const likeAuthor = {
+          id: author.id,
+          name: author.name,
+          image: author.profile?.image,
+        };
+
+        return {
+          author: likeAuthor,
+        };
+      });
+    
+      return {
+        ...otherProps,
+        author: postAuthor,
+        createdAt: DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED),
+        comments: safeComments,
+        likes: safeLikes,
+      };
     });
-
-    console.log(SafePosts)
-
-    return SafePosts;
+    
+    return safePosts;
     
   } catch (error) {
     console.error(error);

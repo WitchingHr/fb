@@ -1,25 +1,25 @@
 import getCurrentUser from "./actions/getCurrentUser";
 
 import Container from "./components/Container";
-import LoginClient from "./LoginClient";
-import HomeClient from "./HomeClient";
+import LoginClient from "./login/LoginClient";
+import HomeClient from "./home/HomeClient";
+import getPosts from "./actions/getPosts";
 
-// Root page
-// if user is logged in, show home page
-// if user is not logged in, show login page
+// Home page
 export default async function Home() {
   // get current user
   const currentUser = await getCurrentUser();
+
+  if (!currentUser) return (
+    <Container>
+      <LoginClient />
+    </Container>
+  );
+
+  // get posts
+  const posts = await getPosts(currentUser.id);
   
   return (
-    <>
-      {currentUser ? (
-        <HomeClient currentUser={currentUser} />
-      ) : (
-        <Container>
-          <LoginClient />
-        </Container>
-      )}
-    </>
+    <HomeClient currentUser={currentUser} posts={posts} />
   );
 }

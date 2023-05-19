@@ -1,22 +1,24 @@
 "use client"
 
-import useUserMenuModal from "@/app/hooks/useUserMenuModal";
-import { Profile } from "@prisma/client";
-import Avatar from "../Avatar";
-import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import { useEffect, useRef } from "react";
-import { SafeUser } from "@/app/types/types";
 import { useRouter } from "next/navigation";
 
+import useUserMenuModal from "@/app/hooks/useUserMenuModal";
+import { User } from "@/app/types";
+
+// components
+import Avatar from "../Avatar";
+
+// props
 interface UserMenuProps {
-  currentUser: SafeUser & {
-    profile: Profile | null;
-  };
+  currentUser: User;
   isOpen: boolean;
 }
 
+// User Menu
+// dropdown menu for user profile link and logout
 const UserMenu: React.FC<UserMenuProps> = ({
   currentUser,
   isOpen
@@ -54,7 +56,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <ul ref={menuRef} onClick={(e) => e.stopPropagation()} className="absolute top-[55px] right-0 flex w-[300px] flex-col gap-2 p-4 bg-white rounded-md shadow-lg">
           <div onClick={handleGoToProfile} className="p-1 border rounded-md shadow-md border-neutral-300">
             <div className="flex flex-row items-center gap-2 p-3 transition duration-300 rounded-md hover:bg-neutral-200">
-              <Avatar currentUser={currentUser} size={36} />
+              <Avatar user={currentUser} size={36} />
               <div>{currentUser.name}</div>
             </div>
           </div>

@@ -6,11 +6,11 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 // hooks
-import useSignupModal from "./hooks/useSignupModal";
+import useSignupModal from "../hooks/useSignupModal";
 
 // components
-import Button from "./components/Button";
-import Input from "./components/inputs/Input";
+import Button from "../components/Button";
+import Input from "../components/inputs/Input";
 import { toast } from "react-hot-toast";
 
 // Login Client

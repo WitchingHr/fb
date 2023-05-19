@@ -6,11 +6,13 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
+import { SafeUser } from "../types";
+
 // components
-import Button from "./components/Button";
-import Input from "./components/inputs/Input";
-import ImageUpload from "./components/inputs/ImageUpload";
-import { SafeUser } from "./types/types";
+import Button from "../components/Button";
+import Input from "../components/inputs/Input";
+import ImageUpload from "../components/inputs/ImageUpload";
+import Container from "../components/Container";
 
 // props
 interface ProfileCreatorProps {
@@ -157,30 +159,30 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
   }
 
   return (
-    <div className={`grid grid-cols-1 lg:grid-cols-2 lg:h-screen mx-auto px-4 py-16 duration-1000
-      ${showHeading ? 'opacity-100' : 'opacity-0'}`}
-    >
-      {/* heading */}
-      <div className="flex flex-col gap-4 pb-8 lg:mt-40 lg:pr-8">
-        <h1 className="text-2xl font-medium">{heading}</h1>
-        <p className="text-xl text-neutral-500">{subheading}</p>
-        {step === STEPS.WELCOME && (
-          <p className="text-lg text-neutral-500">
-            Click Next to get started...
-          </p>
-        )}
+    <Container>
+      <div className={`grid grid-cols-1 lg:grid-cols-2 lg:h-screen mx-auto px-4 py-16 duration-1000
+        ${showHeading ? 'opacity-100' : 'opacity-0'}`}
+      >
+        {/* heading */}
+        <div className="flex flex-col gap-4 pb-8 lg:mt-40 lg:pr-8">
+          <h1 className="text-2xl font-medium">{heading}</h1>
+          <p className="text-xl text-neutral-500">{subheading}</p>
+          {step === STEPS.WELCOME && (
+            <p className="text-lg text-neutral-500">
+              Click Next to get started...
+            </p>
+          )}
+        </div>
+        <div className="max-w-[400px] mx-auto w-full">
+          {/* form */}
+          <form onSubmit={handleSubmit(saveData)} className="flex flex-col justify-between w-full h-full gap-4 mx-auto lg:justify-center">
+            {body}
+            {/* buttons */}
+            <Button submit disabled={isSending} label={step === STEPS.PIC ? 'Finish' : 'Next'} />
+          </form>
+        </div>
       </div>
-
-      <div className="max-w-[400px] mx-auto w-full">
-        {/* form */}
-        <form onSubmit={handleSubmit(saveData)} className="flex flex-col justify-between w-full h-full gap-4 mx-auto lg:justify-center">
-          {body}
-          {/* buttons */}
-          <Button submit disabled={isSending} label={step === STEPS.PIC ? 'Finish' : 'Next'} />
-        </form>
-      </div>
-
-    </div>
+    </Container>
   );
 };
 

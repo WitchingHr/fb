@@ -1,31 +1,45 @@
 "use client"
 
-import { Profile } from "@prisma/client";
+import Link from "next/link";
 import Image from "next/image";
-import { SafeUser } from "../types/types";
+import { User } from "@/app/types/";
 
 // props
 interface AvatarProps {
-  currentUser: SafeUser & {
-    profile: Profile | null;
-  };
-  size: number
+  user: User;
+  size: number;
+  button?: boolean;
 }
 
 // Avatar
 // displays user profile picture, or placeholder if none
 const Avatar: React.FC<AvatarProps> = ({
-  currentUser,
-  size
+  user,
+  size,
+  button = false
 }) => {
   return (
-    <Image
-      src={currentUser.profile?.image || '/images/placeholder.jpg'}
-      alt="profile picture"
-      className="object-cover rounded-full aspect-square"
-      width={size}
-      height={size}
-    />
+    <>
+      {button ? (
+        <Link href={`/user/${user.id}`}>
+          <Image
+            src={user.image || '/images/placeholder.jpg'}
+            alt="profile picture"
+            className="object-cover rounded-full aspect-square"
+            width={size}
+            height={size}
+          />
+        </Link>
+      ) : (
+        <Image
+          src={user.image || '/images/placeholder.jpg'}
+          alt="profile picture"
+          className="object-cover rounded-full aspect-square"
+          width={size}
+          height={size}
+        />
+      )}
+    </>
   );
 };
 

@@ -9,6 +9,12 @@ interface IParams {
 }
 
 const UserPage = async ({ params }: { params: IParams}) => {
+  const { id } = params;
+
+  if (!id) {
+    throw new Error('Not found');
+  }
+
   // get profile by id
   const profile = await getUserById(params);
 
@@ -19,12 +25,12 @@ const UserPage = async ({ params }: { params: IParams}) => {
     redirect('/');
   }
 
-  if (!profile || !profile.profile) {
+  if (!profile) {
     throw new Error('Profile not found');
   }
 
   // get user posts
-  const posts = await getPosts(currentUser.id);
+  const posts = await getPosts(id);
 
   if (!currentUser) {
     redirect('/');

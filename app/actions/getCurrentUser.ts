@@ -23,7 +23,10 @@ export default async function getCurrentUser() {
       where: {
         email: session.user.email as string,
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        friendsIds: true,
         profile: true,
       },
     });
@@ -33,11 +36,8 @@ export default async function getCurrentUser() {
       return null;
     }
 
-    // remove auth data from user object
-    const { email, hashedPassword, ...safeUser } = currentUser;
-
     // return user
-    return safeUser;
+    return currentUser;
 
   } catch (error) {
     // if error, return null

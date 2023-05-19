@@ -1,27 +1,21 @@
 "use client"
 
-import { Profile } from "@prisma/client";
+import Link from "next/link";
 import { useState } from "react";
 import { MdHome } from "react-icons/md";
 
+// components
 import Avatar from "../Avatar";
-import Link from "next/link";
-import { SafeUser } from "@/app/types/types";
-
+import { User } from "@/app/types";
 
 // props
 interface SidebarProps {
-  currentUser: SafeUser & {
-    profile: Profile | null;
-  };
-  profile?: boolean;
+  currentUser: User;
+  profile?: boolean; // true if on profile page
 }
-
-// TODO: add links to home and profile pages
 
 // Sidebar
 // links to home and profile pages
-// collapses on mobile
 const Sidebar: React.FC<SidebarProps> = ({
   currentUser,
   profile = false,
@@ -57,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           ${selected === 'User' ? 'sidebar-selected' : ''}
         `}
       >
-        <Avatar currentUser={currentUser} size={26} />
+        <Avatar user={currentUser} size={26} />
         <div className={`hidden lg:block
           ${profile ? 'lg:!hidden' : ''}
         `}>{currentUser.name}</div>
