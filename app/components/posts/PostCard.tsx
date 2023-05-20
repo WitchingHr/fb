@@ -138,7 +138,7 @@ const PostCard: React.FC<PostCardProps> = ({
   }
 
   return (
-    <div className="flex flex-col p-4 bg-white rounded-md shadow-sm">
+    <div className="flex flex-col p-4 bg-white border rounded-md shadow-sm border-neutral-300">
       <div className="flex flex-col">
 
         {/* post author */}
@@ -166,7 +166,7 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
 
         {/* post content */}
-        <div className="py-2 text-2xl">{post.content}</div>
+        <div className="py-2 text-lg sm:text-2xl">{post.content}</div>
 
         {/* display likes count and comments count */}
           <div className="flex">

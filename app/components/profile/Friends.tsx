@@ -16,7 +16,7 @@ const Friends: React.FC<FriendsProps> = ({
   friends
 }) => {
   return (
-    <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-sm">
+    <div className="flex flex-col gap-2 p-4 bg-white border rounded-md shadow-sm border-neutral-300">
       {/* heading */}
       <h1 className="text-2xl font-semibold">Friends</h1>
 
@@ -29,7 +29,7 @@ const Friends: React.FC<FriendsProps> = ({
       <div className="grid grid-cols-3 gap-4 grid-auto-rows">
         {friends.map((friend) => (
           <Link href={`/user/${friend.id}`} key={friend.id}
-            className="flex flex-col gap-1">
+            className="flex flex-col gap-1 max-w-[149px]">
             <div className="relative w-full aspect-square">
               <Image src={friend.image || "/images/placeholder.jpg"} fill
                 alt="friend profile picture" className="object-cover rounded-md" />

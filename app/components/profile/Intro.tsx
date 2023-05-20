@@ -13,7 +13,7 @@ const Intro: React.FC<IntroProps> = ({
   profile,
 }) => {
   return (
-    <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-sm">
+    <div className="flex flex-col gap-2 p-4 bg-white border rounded-md shadow-sm border-neutral-300">
       <h1 className="text-2xl font-semibold">Intro</h1>
       <div className="flex gap-2">
         <MdHome size={20} className="text-neutral-500" />

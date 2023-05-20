@@ -3,8 +3,8 @@ import getCurrentUser from "./actions/getCurrentUser";
 import Container from "./components/Container";
 import LoginClient from "./login/LoginClient";
 import HomeClient from "./home/HomeClient";
-import getPosts from "./actions/getPosts";
 import getAllPosts from "./actions/getAllPosts";
+import getSuggestedFriends from "./actions/getSuggestedFriends";
 
 // Home page
 export default async function Home() {
@@ -20,8 +20,11 @@ export default async function Home() {
 
   // get posts
   const posts = await getAllPosts();
+
+  // get suggested friends
+  const suggestedFriends = await getSuggestedFriends();
   
   return (
-    <HomeClient currentUser={currentUser} posts={posts} />
+    <HomeClient currentUser={currentUser} posts={posts} suggestedFriends={suggestedFriends} />
   );
 }

@@ -68,7 +68,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
               {/* cover image */}
               <div className="w-full bg-black h-[25vh] rounded-b-lg">a</div>
 
-              <div className="relative flex flex-col items-center justify-center gap-2 px-4 pb-4 md:flex-row md:justify-start">
+              <div className="relative flex flex-col items-center justify-center gap-2 px-2 pb-4 xs:px-4 md:flex-row md:justify-start">
                 {/* user avatar */}
                 <div className="border-4 border-white w-[170px] rounded-full -top-[85px] absolute md:-top-[30px]">
                   <Avatar user={userAvatar} size={170} />
@@ -95,7 +95,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
 
               </div>
 
-              <div className="px-4">
+              <div className="px-2 xs:px-4">
                 <hr className="w-full border-neutral-300" />
 
                 {/* Posts, About, Friends, Photos */}
@@ -111,16 +111,16 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
 
           {/* lower section: user info, friends, and posts */}
           <div className="flex-1">
-            <div className="max-w-[1250px] mx-auto flex flex-col gap-4 p-4 lg:flex-row">
+            <div className="max-w-[1250px] mx-auto flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 lg:flex-row">
 
               {/* left column */}
-              <div className="flex-[.75] flex flex-col gap-4">
+              <div className="flex-[.75] flex flex-col gap-2 xs:gap-4">
                 <Intro profile={profile.profile!} />
                 <Friends friends={profile.friends} />
               </div>
 
               {/* right column */}
-              <div className="flex flex-col flex-1 gap-4">
+              <div className="flex flex-col flex-1 gap-2 xs:gap-4">
                 {user.id === profile.id && (
                   <PostPrompt />
                 )}

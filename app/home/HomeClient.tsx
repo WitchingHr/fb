@@ -1,6 +1,9 @@
 "use client"
 
-import { Posts, SafeUser } from "../types";
+import { useContext, useEffect } from "react";
+
+import { Posts, SafeUser, User } from "../types";
+import { UserContext } from "../providers/UserProvider";
 
 // components
 import ProfileCreator from "./ProfileCreator";
@@ -9,23 +12,24 @@ import Sidebar from "../components/navbars/Sidebar";
 import PostPrompt from "../components/posts/PostPrompt";
 import Sponsored from "../components/Sponsored";
 import PostCard from "../components/posts/PostCard";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../providers/UserProvider";
+import SuggestedFriends from "../components/home/SuggestedFriends";
 
 // props
 interface HomeClientProps {
   currentUser: SafeUser;
   posts: Posts;
+  suggestedFriends: User[] | null;
 }
 
 // Home Client
 // home page for client
 const HomeClient: React.FC<HomeClientProps> = ({
   currentUser,
-  posts
+  posts,
+  suggestedFriends
 }) => {
   // user context
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   // set user
   useEffect(() => {
@@ -41,24 +45,21 @@ const HomeClient: React.FC<HomeClientProps> = ({
     return <ProfileCreator currentUser={currentUser} />;
   }
 
-  // current user avatar
-  const userAvatar = {
-    id: currentUser.id,
-    name: currentUser.name,
-    image: currentUser.profile.image
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
 
-      <div className="flex flex-row justify-between h-full">
+      <div className="flex flex-row h-full overflow-hidden lg:lg-layout-grid">
         {/* sidebar */}
         <Sidebar />
 
         {/* post wall */}
-        <div className="flex flex-col gap-2 max-w-[680px] grow shrink-0 mx-2 py-4">
+        <div className="flex flex-col gap-2 xs:gap-4 mx-auto lg:mx-4 max-w-[680px] px-2 xs:px-4 lg:px-0 py-2 xs:py-4 grow overflow-y-auto">
           <PostPrompt />
+
+          {suggestedFriends && (
+            <SuggestedFriends suggestedFriends={suggestedFriends} />
+          )}
 
           {posts === null ? (
             // no posts
@@ -72,9 +73,7 @@ const HomeClient: React.FC<HomeClientProps> = ({
         </div>
 
         {/* sponsored */}
-        <div className="md:flex flex-col px-2 py-4 hidden lg:ml-[25px]">
-          <Sponsored />
-        </div>
+        <Sponsored />
 
       </div>
     </div>

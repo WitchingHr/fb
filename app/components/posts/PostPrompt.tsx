@@ -16,7 +16,7 @@ const PostPrompt = () => {
 
   const postModal = usePostModal();
   return (
-    <div className="flex flex-col gap-2 p-4 bg-white rounded-md shadow-sm">
+    <div className="flex flex-col gap-2 p-4 bg-white border rounded-md shadow-sm border-neutral-300">
       <div className="flex flex-row items-center gap-2">
         <Avatar user={user} size={40} button />
         <button

@@ -4,6 +4,7 @@
 
 :root {
   background-color: #f0f2f5;
+  min-width: 320px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,4 +34,17 @@
   background-color: #1a77f2;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
+}
+
+.suggested-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
+  grid-template-rows: 1;
+}
+
+@layer utilities {
+  .lg-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr 680px 1fr;
+  }
 }

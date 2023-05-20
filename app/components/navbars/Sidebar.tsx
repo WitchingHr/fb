@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [selected, setSelected] = useState<String>(profile ? 'User' : 'Home');
 
   return (
-    <div className={`hidden sm:flex flex-col gap-2 px-2 py-4 lg:flex-1 max-w-[280px]
+    <div className={`hidden sm:flex flex-col gap-2 px-2 py-4 max-w-[280px]
       bg-white lg:bg-transparent z-0 h-full border-neutral-300 border-r lg:border-r-0
       ${profile ? 'lg:!bg-white lg:!border-r lg:!flex-initial' : ''}`}
     >
@@ -54,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         `}
       >
         <Avatar user={user} size={26} />
-        <div className={`hidden lg:block
+        <div className={`hidden lg:block whitespace-nowrap
           ${profile ? 'lg:!hidden' : ''}
         `}>{user.name}</div>
       </Link>

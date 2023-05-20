@@ -54,8 +54,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
     <>
       {isOpen && (
         <ul ref={menuRef} onClick={(e) => e.stopPropagation()}
-          className={`absolute top-[55px] right-0 flex w-[300px] border border-neutral-300
-            flex-col gap-2 p-4 bg-white rounded-md shadow-lg`}>
+          className={`absolute top-[48px] -right-4 sm:right-0 flex w-screen sm:w-[300px] border border-neutral-300
+            flex-col gap-2 p-4 bg-white md:rounded-md shadow-xl`}>
           <div onClick={handleGoToProfile} className="p-1 border rounded-md shadow-md border-neutral-300">
             <div className={`flex flex-row items-center gap-2 p-3
               duration-300 rounded-md hover:bg-neutral-200`}>
