@@ -2,6 +2,11 @@
 
 import { useContext, useEffect, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
+import { IoPersonAdd } from "react-icons/io5";
+import { BsPersonCheckFill } from "react-icons/bs";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import { Posts, UserProfile, SafeUser } from "@/app/types";
 import { UserContext } from "@/app/providers/UserProvider";
@@ -13,6 +18,7 @@ import PostPrompt from "@/app/components/posts/PostPrompt";
 import Intro from "@/app/components/profile/Intro";
 import PostCard from "@/app/components/posts/PostCard";
 import Navbar from "@/app/components/navbars/Navbar";
+import Friends from "@/app/components/profile/Friends";
 
 // props
 interface ProfileClientProps {
@@ -28,8 +34,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
   currentUser,
   posts
 }) => {
+  const router = useRouter();
   // user context
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   // set current user
   useEffect(() => {
@@ -47,8 +54,67 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
     image: profile.profile?.image
   };
 
+  // check if user is friend
+  const isFriend = profile.friends.some((friend) => friend.id === user.id);
+
   // selected tab
   const [selected, setSelected] = useState<String>("Posts");
+
+  // disable add friend button while sending request
+  const [isSending, setIsSending] = useState<boolean>(false);
+
+  // add friend
+  const handleAddFriend = async () => {
+    setIsSending(true);
+
+    // send request
+    const res = await axios.post(`/api/user/${profile.id}/add`)
+      .then(() => {
+        // toast success
+        toast.success("Friend added!");
+        // refresh page
+        router.refresh();
+      })
+      .catch((err) => {
+        // toast error
+        toast.error(err.response.data.message);
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
+  };
+
+  // remove friend
+  const handleRemoveFriend = async () => {
+    setIsSending(true);
+
+    // send request
+    const res = await axios.post(`/api/user/${profile.id}/remove`)
+      .then(() => {
+        // toast success
+        toast.success("Friend removed");
+        // refresh page
+        router.refresh();
+      })
+      .catch((err) => {
+        // toast error
+        toast.error(err.response.data.message);
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
+  }
+
+  // remove friend button text
+  const [buttonText, setButtonText] = useState<string>("Friends");
+
+  // change remove friend button text on hover
+  const handleRemoveFriendButton = () => {
+    if (buttonText === "Friends") {
+      return setButtonText("Remove");
+    }
+    setButtonText("Friends");
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -75,12 +141,44 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
                     {profile.friends.length} friends
                   </div>
                 </div>
-                <button className={`
-                  flex flex-row items-center gap-2 px-4 py-2 transition duration-300
-                  rounded bg-neutral-200 hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
-                  <MdModeEditOutline size={20} />
-                  <div>Edit profile</div>
-                </button>
+                
+                {profile.id === user.id ? (
+                  // edit profile button if on own profile page
+                  <button className={`
+                    flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+                    rounded bg-neutral-200 hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
+                    <MdModeEditOutline size={20} />
+                    <div>Edit profile</div>
+                  </button>
+                ) : isFriend ? (
+                  // remove friend button if user is friend
+                  <button
+                    disabled={isSending}
+                    // change button text on hover in
+                    onMouseEnter={handleRemoveFriendButton}
+                    onMouseLeave={handleRemoveFriendButton}
+                    onClick={handleRemoveFriend}
+                    className={`
+                    flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+                    rounded bg-[#35a420] hover:bg-red-600 text-white md:ml-auto md:mt-auto`}
+                  >
+                    <BsPersonCheckFill size={20} />
+                    <div>{buttonText}</div>
+                  </button>
+                ) : (
+                  // add friend button if user is not friend
+                  <button
+                    disabled={isSending}
+                    onClick={handleAddFriend}
+                    className={`
+                    flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+                    rounded bg-[#1b74e4] text-white md:ml-auto md:mt-auto`}
+                  >
+                    <IoPersonAdd size={20} />
+                    <div>Add Friend</div>
+                  </button>
+                )}
+
               </div>
               <div className="px-4">
                 <hr className="w-full border-neutral-300" />
@@ -132,13 +230,16 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
             <div className="max-w-[1250px] mx-auto flex flex-col gap-4 p-4 lg:flex-row">
 
               {/* left */}
-              <div className="flex-[.75]">
+              <div className="flex-[.75] flex flex-col gap-4">
                 <Intro profile={profile.profile!} />
+                <Friends friends={profile.friends} />
               </div>
 
               {/* right */}
               <div className="flex flex-col flex-1 gap-4">
-                <PostPrompt />
+                {user.id === profile.id && (
+                  <PostPrompt />
+                )}
                 {posts?.map((post) => (
                   <PostCard post={post} key={post.id} />
                 ))}

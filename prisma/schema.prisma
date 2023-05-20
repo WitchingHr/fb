@@ -26,17 +26,11 @@ model User {
   comments          Comment[]
   likes             Like[]
 
-  // friends of user
-  friends           User[]   @relation("friends", fields: [friendsIds], references: [id])
-  friendsIds        String[] @db.ObjectId
-
-  // user is friend of
-  friendOf          User[]   @relation("friends", fields: [friendOfIds], references: [id])
-  friendOfIds       String[] @db.ObjectId
-
-  // friend requests
-  requestsSent      FriendRequest[] @relation("author")
-  requestsReceived  FriendRequest[] @relation("recipient")
+  // friends
+  friends           User[]    @relation("UserFollows", fields: [friendsIds], references: [id])
+  friendsIds        String[]  @db.ObjectId
+  friendOf          User[]    @relation("UserFollows", fields: [friendOfIds], references: [id])
+  friendOfIds       String[]  @db.ObjectId
 }
 
 model Profile {
@@ -94,20 +88,4 @@ model Like {
   // liked post
   post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String?   @db.ObjectId
-}
-
-model FriendRequest {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-
-  // request author
-  author        User      @relation(fields: [authorId], references: [id], name: "author")
-  authorId      String    @db.ObjectId
-
-  // request recipient
-  recipient     User      @relation(fields: [recipientId], references: [id], name: "recipient")
-  recipientId   String    @db.ObjectId
-
-  // request status
-  status        String    @default("pending")
-  accepted      Boolean   @default(false)
 }
