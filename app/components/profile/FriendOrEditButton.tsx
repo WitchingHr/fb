@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
-import { BsPersonCheckFill } from "react-icons/bs";
-import { IoPersonAdd } from "react-icons/io5";
+import { BsPersonCheckFill, BsPersonDashFill, BsPersonPlusFill } from "react-icons/bs";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -25,6 +24,29 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
   user,
   isFriend,
 }) => {
+  // state for mobile
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // check if mobile, set state on mount and on resize
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsMobile(true);
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   // router
   const router = useRouter();
 
@@ -85,45 +107,80 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
   }
 
   return (
-    <>
-    {profile.id === user.id ? (
-      // edit profile button if on own profile page
-      <button className={`
-        flex flex-row items-center gap-2 px-4 py-2 transition duration-300
-        rounded bg-neutral-200 hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
-        <MdModeEditOutline size={20} />
-        <div>Edit profile</div>
-      </button>
-    ) : isFriend ? (
-      // remove friend button if user is friend
-      <button
-        disabled={isSending}
-        // change button text on hover in
-        onMouseEnter={handleRemoveFriendButton}
-        onMouseLeave={handleRemoveFriendButton}
-        onClick={handleRemoveFriend}
-        className={`
-        flex flex-row items-center gap-2 px-4 py-2 transition duration-300
-        rounded bg-[#35a420] hover:bg-red-600 text-white md:ml-auto md:mt-auto`}
-      >
-        <BsPersonCheckFill size={20} />
-        <div>{buttonText}</div>
-      </button>
-    ) : (
-      // add friend button if user is not friend
-      <button
-        disabled={isSending}
-        onClick={handleAddFriend}
-        className={`
-        flex flex-row items-center gap-2 px-4 py-2 transition duration-300
-        rounded bg-[#1b74e4] text-white md:ml-auto md:mt-auto`}
-      >
-        <IoPersonAdd size={20} />
-        <div>Add Friend</div>
-      </button>
-    )}
-      
-    </>
+    <div className="flex gap-2 md:ml-auto md:mt-auto">
+      {profile.id === user.id ? (
+        // edit profile button if on own profile page
+        <button className={`
+          flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+          rounded bg-neutral-200 hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
+          <MdModeEditOutline size={20} />
+          <div>Edit profile</div>
+        </button>
+      ) : isFriend ? (
+
+        // ON MOBILE: show two buttons, friends and remove friend
+        isMobile ? (
+          <>
+          {/* friends */}
+          <button
+            disabled={true}
+            // change button text on hover in
+            className={`
+            flex flex-row items-center gap-2 px-4 py-2
+            cursor-not-allowed rounded bg-[#35a420] text-white`}
+          >
+            <BsPersonCheckFill size={20} />
+            <div>{buttonText}</div>
+          </button>
+
+          {/* remove friend */}
+          <button
+            disabled={isSending}
+            onClick={handleRemoveFriend}
+            className={`
+            flex flex-row items-center gap-2 px-4 py-2
+            rounded bg-neutral-500 text-white`}
+          >
+            <BsPersonDashFill size={20} />
+            <div>Remove</div>
+          </button>
+          </>
+        ) : (
+
+          // NOT ON MOBILE: dynamically show friends or remove friend button
+          <button
+            disabled={isSending}
+            // change button text on hover in
+            onMouseEnter={handleRemoveFriendButton}
+            onMouseLeave={handleRemoveFriendButton}
+            onClick={handleRemoveFriend}
+            className={`
+            flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+            rounded bg-[#35a420] hover:bg-red-600 text-white`}
+          >
+            {buttonText === "Friends" ? (
+              <BsPersonCheckFill size={20} />
+            ) : (
+              <BsPersonDashFill size={20} />
+            )}
+            <div>{buttonText}</div>
+          </button>
+        )
+      ) : (
+
+        // add friend button if user is not friend
+        <button
+          disabled={isSending}
+          onClick={handleAddFriend}
+          className={`
+          flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+          rounded bg-[#1b74e4] hover:bg-[#1663c2] text-white`}
+        >
+          <BsPersonPlusFill size={20} />
+          <div>Add Friend</div>
+        </button>
+      )}
+    </div>
   );
 };
 

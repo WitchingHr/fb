@@ -1,17 +1,33 @@
 import prisma from "../lib/dbConnect";
 import { DateTime } from "luxon";
+import getCurrentUser from "./getCurrentUser";
 
-// get posts by user
-const getPosts = async (id: string) => {
+// get all posts
+const getAllPosts = async () => {
   try {
-    const posts = await prisma.post.findMany({
+    const currentUser = await getCurrentUser();
+    
+    if (!currentUser) {
+      throw new Error('No user found');
+    }
+
+    // create an array of user ids to fetch posts for
+    const userIds = currentUser.friendsIds;
+
+    // include the current user's id
+    userIds.push(currentUser.id);
+    
+    // Fetch the posts of the user and all their friends, sorted by `createdAt`
+    const allPosts = await prisma.post.findMany({
       where: {
-        authorId: id,
+        authorId: {
+          in: userIds, // look for posts authored by the user or their friends
+        },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'desc', // sort by createdAt in descending order
       },
-      take: 10,
+      take: 25, // limit to 25 posts
       include: {
         author: { // post author
           select: {
@@ -58,7 +74,7 @@ const getPosts = async (id: string) => {
     });
 
     // sort and sanitize post data
-    const safePosts = posts.map((post) => {
+    const safePosts = allPosts.map((post) => {
       // destructure post
       const { createdAt, comments, likes, author, authorId, ...otherProps } = post;
 
@@ -111,11 +127,12 @@ const getPosts = async (id: string) => {
     });
     
     return safePosts;
-    
+
+
   } catch (error) {
     console.error(error);
     return null;
   }
-}
+};
 
-export default getPosts;
+export default getAllPosts;
