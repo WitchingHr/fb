@@ -21,7 +21,9 @@ const Friends: React.FC<FriendsProps> = ({
       <h1 className="text-2xl font-semibold">Friends</h1>
 
       {/* friend count */}
-      <div className="font-light text-neutral-500">{friends.length} friends</div>
+      <div className="font-light text-neutral-500">
+        {friends.length} friend{friends.length === 1 ? "" : "s"}
+      </div>
       
       {/* grid */}
       <div className="grid grid-cols-3 gap-4 grid-auto-rows">

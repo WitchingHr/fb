@@ -20,7 +20,7 @@ export type User = {
   image: string | null | undefined;
 }
 
-interface Comment {
+export type Comment = {
   id: string;
   content: string;
   createdAt: string;

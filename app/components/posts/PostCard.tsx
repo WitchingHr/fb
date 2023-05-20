@@ -15,6 +15,7 @@ import { Post } from "@/app/types";
 // components
 import Avatar from "../Avatar";
 import PostMenu from "../menus/PostMenu";
+import PostComments from "./PostComments";
 
 // props
 interface PostCardProps {
@@ -82,7 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({
     }
 
     // send request
-    const res = await axios.post("/api/comment", data)
+    await axios.post("/api/comment", data)
       .then(() => {
         // success
         toast.success("Comment posted");
@@ -111,7 +112,7 @@ const PostCard: React.FC<PostCardProps> = ({
     }
 
     // send request
-    const res = await axios.post("/api/like", data)
+    await axios.post("/api/like", data)
       .then((res) => {
         // get response status code
         const response = res.data;
@@ -226,40 +227,11 @@ const PostCard: React.FC<PostCardProps> = ({
 
         {/* comments */}
         <div className="flex flex-col">
-          {post.comments.length > 0 && (
-            <>
-              {post.comments.length > 1 && (
-                // view more comments button
-                <button className="pt-2 text-neutral-500 text-start hover:underline">View more comments</button>
-              )}
 
-              
-              {/* first comment */}
-              <div className="flex gap-2 pt-2">
-
-                {/* author avatar */}
-                <Avatar user={post.comments[0].author} size={36} button />
-
-                <div className="flex flex-col">
-                  {/* comment author */}
-                  <Link
-                    href={`/user/${post.comments[0].author.id}`}
-                    className="text-sm hover:underline"
-                  >
-                    {post.comments[0].author.name}
-                  </Link>
-
-                  {/* comment content */}
-                  <div className="text-sm">{post.comments[0].content}</div>
-
-                  {/* comment time */}
-                  <div className="text-xs font-light text-neutral-500">{post.comments[0].createdAt}</div>
-                </div>
-              </div>
-            </>
-          )}
+          {/* display all comments */}
+          <PostComments comments={post.comments} />
           
-          {/* user input */}
+          {/* user input for new comment */}
           <div className={`flex items-center gap-2 overflow-hidden duration-1000 transition
             ${viewComment ? "max-h-96 mt-3 py-1" : "max-h-0"}`}
           >
