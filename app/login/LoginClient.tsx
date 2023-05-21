@@ -92,7 +92,7 @@ const LoginClient = () => {
         </div>
 
         {/* login form */}
-        <div className="flex flex-col gap-4 bg-white shadow-xl rounded-xl p-4 mx-auto w-full max-w-[400px] mt-8 md:mt-0">
+        <div className="flex flex-col gap-4 bg-white dark:bg-[#242526] shadow-xl rounded-xl p-4 mx-auto w-full max-w-[400px] mt-8 md:mt-0">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <Input
               label="Email"
@@ -114,7 +114,7 @@ const LoginClient = () => {
             />
             <Button disabled={isSending}  label="Log In" submit />
           </form>
-          <hr />
+          <hr className="dark:border-[#393a3b]" />
 
           {/* open signup modal */}
           <Button label="Create New Account" onClick={signupModal.onOpen} secondary />

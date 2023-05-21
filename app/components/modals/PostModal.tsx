@@ -74,7 +74,7 @@ const PostModal = () => {
         disabled={isSending}
         maxLength={240}
         placeholder="What's on your mind?"
-        className={`p-4 border resize-none 
+        className={`p-4 border resize-none dark:bg-[#3a3b3c] dark:border-0
           ${errors.content
             ? 'border-red-500 focus:border-red-500 placeholder:text-red-500'
             : 'border-neutral-200'}

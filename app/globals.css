@@ -4,11 +4,14 @@
 
 :root {
   background-color: #f0f2f5;
+  color: #737373;
   min-width: 320px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    background-color: #18191a;
+    color: #e4e6eb;
   }
 }
 
@@ -38,8 +41,10 @@
 
 .suggested-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
-  grid-template-rows: 1;
+  grid-template-columns: repeat(4, 144px);
+  overflow-x: scroll;
+  gap: 8px;
+  padding: 0 16px 16px 16px;
 }
 
 @layer utilities {

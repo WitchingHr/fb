@@ -13,6 +13,7 @@ import PostPrompt from "../components/posts/PostPrompt";
 import Sponsored from "../components/Sponsored";
 import PostCard from "../components/posts/PostCard";
 import SuggestedFriends from "../components/home/SuggestedFriends";
+import theme from "../lib/theme";
 
 // props
 interface HomeClientProps {
@@ -28,6 +29,11 @@ const HomeClient: React.FC<HomeClientProps> = ({
   posts,
   suggestedFriends
 }) => {
+  // set theme
+  useEffect(() => {
+    theme();
+  }, []);
+
   // user context
   const { setUser } = useContext(UserContext);
 
@@ -45,11 +51,12 @@ const HomeClient: React.FC<HomeClientProps> = ({
     return <ProfileCreator currentUser={currentUser} />;
   }
 
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
 
-      <div className="flex flex-row h-full overflow-hidden lg:lg-layout-grid">
+      <div className="flex flex-row h-full dark:bg-[#18191a] overflow-hidden lg:lg-layout-grid">
         {/* sidebar */}
         <Sidebar />
 

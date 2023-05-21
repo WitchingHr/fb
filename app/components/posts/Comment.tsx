@@ -54,21 +54,21 @@ const Comment: React.FC<CommentProps> = ({
         {/* comment author */}
         <Link
           href={`/user/${comment.author.id}`}
-          className="text-sm hover:underline max-w-min whitespace-nowrap"
+          className="text-sm hover:underline max-w-min whitespace-nowrap text-black dark:text-[#e4e6eb]"
         >
           {comment.author.name}
         </Link>
 
         {/* comment content */}
-        <div className="text-sm">{comment.content}</div>
+        <div className="text-sm text-black dark:text-[#e4e6eb]">{comment.content}</div>
 
         {/* comment time */}
-        <div className="flex gap-2">
-          <div className="text-xs font-light text-neutral-500">{comment.createdAt}</div>
+        <div className="flex gap-2 text-neutral-500 dark:text-neutral-400">
+          <div className="text-xs font-light">{comment.createdAt}</div>
           {comment.author.id === user.id && (
             <button
               onClick={handleDeleteComment}
-              className="hidden ml-auto text-xs text-neutral-500 hover:underline group-hover:block"
+              className="hidden ml-auto text-xs hover:underline group-hover:block"
             >Delete comment</button>
           )}
         </div>

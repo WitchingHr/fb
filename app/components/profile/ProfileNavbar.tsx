@@ -10,13 +10,13 @@ const ProfileNavbar: React.FC<ProfileNavbarProps> = ({
   setSelected,
 }) => {
   return (
-    <ul className="flex flex-row justify-around w-full md:justify-start md:gap-4 text-neutral-500">
+    <ul className="flex flex-row justify-around w-full md:justify-start md:gap-4 text-neutral-500 dark:text-neutral-400">
       <li
         className={`p-4 cursor-pointer
           ${selected === "Posts"
             ? "text-[#1a77f2] profile-selected relative"
-            : "text-neutral-500"}
-            hover:bg-neutral-200 rounded-md duration-300 transition`}
+            : "text-neutral-500 dark:text-neutral-400"}
+            hover:bg-neutral-200 dark:hover:bg-[#3a3b3c] rounded-md duration-300 transition`}
         onClick={() => setSelected("Posts")}
       >
         Posts
@@ -24,8 +24,8 @@ const ProfileNavbar: React.FC<ProfileNavbarProps> = ({
       <li
         className={`p-4 cursor-pointer ${selected === "About"
         ? "text-[#1a77f2] profile-selected relative"
-        : "text-neutral-500"}
-        hover:bg-neutral-200 rounded-md duration-300 transition`}
+        : "text-neutral-500 dark:text-neutral-400"}
+        hover:bg-neutral-200 dark:hover:bg-[#3a3b3c] rounded-md duration-300 transition`}
     onClick={() => setSelected("About")}
       >
         About
@@ -33,8 +33,8 @@ const ProfileNavbar: React.FC<ProfileNavbarProps> = ({
       <li
         className={`p-4 cursor-pointer ${selected === "Friends"
         ? "text-[#1a77f2] profile-selected relative"
-        : "text-neutral-500"}
-        hover:bg-neutral-200 rounded-md duration-300 transition`}
+        : "text-neutral-500 dark:text-neutral-400"}
+        hover:bg-neutral-200 dark:hover:bg-[#3a3b3c] rounded-md duration-300 transition`}
     onClick={() => setSelected("Friends")}
       >
         Friends
@@ -42,8 +42,8 @@ const ProfileNavbar: React.FC<ProfileNavbarProps> = ({
       <li
         className={`p-4 cursor-pointer ${selected === "Photos"
         ? "text-[#1a77f2] profile-selected relative"
-        : "text-neutral-500"}
-        hover:bg-neutral-200 rounded-md duration-300 transition`}
+        : "text-neutral-500 dark:text-neutral-400"}
+        hover:bg-neutral-200 dark:hover:bg-[#3a3b3c] rounded-md duration-300 transition`}
     onClick={() => setSelected("Photos")}
       >
         Photos

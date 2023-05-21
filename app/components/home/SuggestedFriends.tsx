@@ -43,15 +43,15 @@ const SuggestedFriends: React.FC<SuggestedFriendsProps> = ({
       });
   };
   return (
-    <div className="flex flex-col w-full gap-2 bg-white border rounded-md shadow-sm border-neutral-300">
-      <h1 className="px-4 pt-4 text-xl font-medium">Suggested Friends</h1>
+    <div className="flex flex-col w-full gap-2 bg-white dark:bg-[#242526] border dark:border-0 rounded-md shadow-sm border-neutral-300">
+      <h1 className="px-4 pt-4 text-xl font-medium text-black dark:text-[#e4e6eb]">Suggested Friends</h1>
 
-      <div className="gap-2 px-4 pb-4 suggested-grid">
+      <div className="suggested-grid">
         {suggestedFriends.map((user) => (
           <div
             key={user.id}
             className={`flex flex-col border overflow-hidden
-            rounded-md shadow-lg border-neutral-300`}
+            rounded-md shadow-lg border-neutral-300 dark:border-[#3a3b3c]`}
           >
             <Link href={`/user/${user.id}`} className="relative w-full overflow-hidden aspect-square">
       
@@ -65,7 +65,7 @@ const SuggestedFriends: React.FC<SuggestedFriendsProps> = ({
             </Link>
             <div className="flex flex-col justify-between flex-1 gap-1 p-3 pt-1">
               {/* name */}
-              <div className="">{user.name}</div>
+              <div className="text-black dark:text-[#e4e6eb]">{user.name}</div>
       
               {/* add friend button */}
               <button
@@ -73,7 +73,8 @@ const SuggestedFriends: React.FC<SuggestedFriendsProps> = ({
                 disabled={isSending}
                 className={`flex gap-2 duration-300 py-1 px-2 rounded-md
                 whitespace-nowrap items-center justify-center mt-auto
-                text-[#1b74e4] bg-[#e7f3ff] hover:bg-[#d1dce7]`}
+                text-[#1b74e4] dark:text-[#2d86ff] bg-[#e7f3ff] dark:bg-[#263951]
+                hover:bg-[#d1dce7] dark:hover:bg-[#2f4764]`}
               >
                 <BsPersonPlusFill size={20} />
                 <div>Add Friend</div>

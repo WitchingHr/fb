@@ -52,22 +52,22 @@ const Modal: React.FC<ModalProps> = ({
       {/* modal */}
 			<div
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-        className={`flex flex-col pb-4 bg-white h-screen w-screen sm:max-w-[400px]
+        className={`flex flex-col pb-4 bg-white dark:bg-[#242526] h-screen w-screen sm:max-w-[400px]
         sm:h-min sm:rounded sm:mt-24 shadow-xl mx-auto duration-300
         ${showModal ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
       >
-        <div className="flex justify-between px-4 py-3 border-b border-neutral-300">
+        <div className="flex justify-between px-4 py-3 border-b border-neutral-300 dark:border-[#393b3d]">
         
           {/* heading */}
           <div className="flex flex-col gap-1">
-            <h1 className="text-3xl font-bold">{title}</h1>
-            <h2 className="text-neutral-500">{subtitle}</h2>
+            <h1 className="text-3xl font-bold text-black dark:text-[#e4e6eb]">{title}</h1>
+            <h2 className="text-neutral-500 dark:text-neutral-400">{subtitle}</h2>
           </div>
         
           {/* close modal button */}
           <button
             onClick={onClose}
-            className="mb-auto text-4xl text-neutral-500"
+            className="mb-auto text-4xl text-neutral-500 dark:text-neutral-400"
           >
             ×
           </button>

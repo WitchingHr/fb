@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { Posts, UserProfile, SafeUser } from "@/app/types";
 import { UserContext } from "@/app/providers/UserProvider";
+import theme from "@/app/lib/theme";
 
 // components
 import Sidebar from "@/app/components/navbars/Sidebar";
@@ -55,6 +56,11 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
   // selected tab
   const [selected, setSelected] = useState<string>("Posts");
 
+  // set theme
+  useEffect(() => {
+    theme();
+  }, []);
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -63,24 +69,24 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
         <div className="flex flex-col flex-1 overflow-y-auto">
 
           {/* upper */}
-          <div className="z-10 bg-white border-b shadow-sm border-neutral-300">
+          <div className="z-10 bg-white dark:bg-[#242526] border-b shadow-sm border-neutral-300 dark:border-[#393b3d]">
             <div className="max-w-[1250px] mx-auto">
               {/* cover image */}
-              <div className="w-full bg-black h-[25vh] rounded-b-lg">a</div>
+              <div className="w-full bg-black h-[25vh] rounded-b-lg"></div>
 
               <div className="relative flex flex-col items-center justify-center gap-2 px-2 pb-4 xs:px-4 md:flex-row md:justify-start">
                 {/* user avatar */}
-                <div className="border-4 border-white w-[170px] rounded-full -top-[85px] absolute md:-top-[30px]">
+                <div className="border-4 border-white dark:border-[#242526] w-[170px] rounded-full -top-[85px] absolute md:-top-[30px]">
                   <Avatar user={userAvatar} size={170} />
                 </div>
 
                 <div className="flex flex-col items-center gap-1 mt-[90px] md:mt-0 md:items-start md:ml-[184px] md:h-[136px] md:pt-4">
 
                   {/* user name */}
-                  <div className="text-3xl font-bold">{profile.name}</div>
+                  <div className="text-3xl font-bold text-black dark:text-[#e4e6eb]">{profile.name}</div>
 
                   {/* friend count */}
-                  <div className="text-lg text-neutral-500">
+                  <div className="text-lg text-neutral-500 dark:text-neutral-400">
                     {profile.friends.length} friend{profile.friends.length === 1 ? "" : "s"}
                   </div>
 
@@ -96,7 +102,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
               </div>
 
               <div className="px-2 xs:px-4">
-                <hr className="w-full border-neutral-300" />
+                <hr className="w-full border-neutral-300 dark:border-[#393b3d]" />
 
                 {/* Posts, About, Friends, Photos */}
                 <ProfileNavbar
@@ -110,8 +116,8 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
           </div>
 
           {/* lower section: user info, friends, and posts */}
-          <div className="flex-1">
-            <div className="max-w-[1250px] mx-auto flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 lg:flex-row">
+          <div className="flex-1 dark:bg-[#18191a]">
+            <div className="max-w-[1250px]  mx-auto flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 lg:flex-row">
 
               {/* left column */}
               <div className="flex-[.75] flex flex-col gap-2 xs:gap-4">

@@ -39,7 +39,8 @@ const Input: React.FC<InputProps> = ({
         disabled={disabled}
         {...register(id, { required })}
         className={
-          `peer p-4 pt-6 border w-full rounded
+          `peer p-4 pt-6 border w-full rounded dark:bg-[#3a3b3c]
+          ${!errors[id] && 'dark:border-0'}
           ${errors[id] ? 'border-red-500 focus:border-red-500' : 'border-neutral-200'}}`}
       />
 

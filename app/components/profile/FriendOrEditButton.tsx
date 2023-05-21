@@ -111,8 +111,8 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
       {profile.id === user.id ? (
         // edit profile button if on own profile page
         <button className={`
-          flex flex-row items-center gap-2 px-4 py-2 transition duration-300
-          rounded bg-neutral-200 hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
+          flex flex-row items-center gap-2 px-4 py-2 transition duration-300 text-black dark:text-[#e4e6eb]
+          rounded bg-neutral-200 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
           <MdModeEditOutline size={20} />
           <div>Edit profile</div>
         </button>
@@ -139,7 +139,7 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
             onClick={handleRemoveFriend}
             className={`
             flex flex-row items-center gap-2 px-4 py-2
-            rounded bg-neutral-500 text-white`}
+            rounded bg-neutral-500 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] text-white`}
           >
             <BsPersonDashFill size={20} />
             <div>Remove</div>

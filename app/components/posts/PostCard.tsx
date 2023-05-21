@@ -1,18 +1,17 @@
 "use client"
 
 import { useContext, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { VscComment } from "react-icons/vsc";
-import Link from "next/link";
 import { GoKebabHorizontal } from "react-icons/go";
 
 import { UserContext } from "@/app/providers/UserProvider";
 import { Post } from "@/app/types";
 
-// components
 import Avatar from "../Avatar";
 import PostMenu from "../menus/PostMenu";
 import PostComments from "./PostComments";
@@ -138,7 +137,7 @@ const PostCard: React.FC<PostCardProps> = ({
   }
 
   return (
-    <div className="flex flex-col p-4 bg-white border rounded-md shadow-sm border-neutral-300">
+    <div className="flex flex-col p-4 bg-white dark:bg-[#242526] border dark:border-0 rounded-md shadow-sm border-neutral-300 dark:border-[#e4e6eb]">
       <div className="flex flex-col">
 
         {/* post author */}
@@ -148,8 +147,8 @@ const PostCard: React.FC<PostCardProps> = ({
 
           {/* name and time posted */}
           <div className="flex flex-col">
-            <Link href={`/user/${post.author.id}`} className="text-lg hover:underline">{post.author.name}</Link>
-            <div className="text-sm font-light text-neutral-500">{post.createdAt}</div>
+            <Link href={`/user/${post.author.id}`} className="text-lg hover:underline text-black dark:text-[#e4e6eb]">{post.author.name}</Link>
+            <div className="text-sm font-light text-neutral-500 dark:text-neutral-400">{post.createdAt}</div>
           </div>
 
           {/* post menu button */}
@@ -157,7 +156,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <div className="relative ml-auto">
               <button
                 onClick={handlePostMenu}
-                className="p-1 duration-300 rounded-full text-neutral-500 hover:bg-neutral-100">
+                className="p-1 duration-300 rounded-full text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-[#3a3b3c]">
                 <GoKebabHorizontal size={20} />
               </button>
               <PostMenu isOpen={isOpen} setIsOpen={setIsOpen} postId={post.id} />
@@ -166,15 +165,15 @@ const PostCard: React.FC<PostCardProps> = ({
         </div>
 
         {/* post content */}
-        <div className="py-2 text-lg sm:text-2xl">{post.content}</div>
+        <div className="py-2 text-lg sm:text-2xl text-black dark:text-[#e4e6eb]">{post.content}</div>
 
         {/* display likes count and comments count */}
-          <div className="flex">
+          <div className="flex text-neutral-500 dark:text-neutral-400">
             {/* likes count */}
             {post.likes.length > 0 && (
               <div className="flex items-center gap-1 pb-1 mr-auto">
                 <AiOutlineLike size={12} />
-                <div className="text-sm text-neutral-500">
+                <div className="text-sm">
                   {post.likes.length}
                 </div>
               </div>
@@ -183,7 +182,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {/* comments count */}
             {post.comments.length > 0 && (
               <div className="flex items-center gap-1 pb-1 ml-auto">
-                <div className="text-sm text-neutral-500">
+                <div className="text-sm">
                   {post.comments.length}
                 </div>
                 <VscComment size={12} />
@@ -191,15 +190,16 @@ const PostCard: React.FC<PostCardProps> = ({
             )}
           </div>
 
-        <hr />
+        
+        <hr className="dark:border-[#393a3b]" />
 
         {/* like and comment buttons */}
-        <div className="flex justify-around text-xl text-neutral-500">
+        <div className="flex justify-around text-xl text-neutral-500 dark:text-neutral-400">
           <button
             onClick={likePost}
             disabled={loading}
             className={`flex items-center gap-2 px-4 py-2 rounded-md duration-300
-            hover:bg-neutral-100 focus:outline-none focus:bg-neutral-100`}
+            hover:bg-neutral-100 dark:hover:bg-[#3a3b3c] focus:outline-none focus:bg-neutral-100`}
           >
             {post.likes.some((like) => like.author.id === user.id) ? (
               <>
@@ -216,14 +216,14 @@ const PostCard: React.FC<PostCardProps> = ({
           <button
             onClick={toggleInput}
             className={`flex items-center gap-2 px-4 py-2 rounded-md duration-300
-            hover:bg-neutral-100 focus:outline-none focus:bg-neutral-100`}
+            hover:bg-neutral-100 dark:hover:bg-[#3a3b3c] focus:outline-none focus:bg-neutral-100`}
           >
             <VscComment size={20} />
             <div>Comment</div>
           </button>
         </div>
 
-        <hr />
+        <hr className="dark:border-[#393a3b]" />
 
         {/* comments */}
         <div className="flex flex-col">
@@ -243,9 +243,10 @@ const PostCard: React.FC<PostCardProps> = ({
                   onChange={(e) => {setComment(e.target.value)}}
                   value={comment}
                   ref={inputRef}
-                  className={`flex-1 px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200 duration-300
-                    focus:outline-none focus:border-2 focus:border-neutral-300
-                    placeholder:font-light placeholder:text-neutral-500`}
+                  className={`flex-1 px-4 py-2 rounded-full bg-neutral-100
+                  hover:bg-neutral-200 duration-300 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50]
+                    focus:outline-none focus:border-2 focus:border-neutral-300 dark:focus:border-neutral-400
+                    placeholder:font-light placeholder:text-neutral-500 dark:placeholder:text-neutral-400`}
                   placeholder="Write a comment..."
                 />
               </>
