@@ -27,7 +27,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div className={`hidden sm:flex flex-col gap-2 px-2 py-4 max-w-[280px]
-      bg-white dark:bg-[#242526] lg:bg-transparent z-0 h-full border-neutral-300 dark:border-[#393b3d] border-r lg:border-r-0
+      bg-white dark:bg-[#242526] z-0 h-full border-neutral-300 dark:border-[#393b3d] border-r lg:border-r-0
+      ${!profile && ('lg:bg-transparent')}
       ${profile ? 'bg-white dark:bg-[#242526] lg:!border-r lg:!flex-initial' : ''}`}
     >
       {/* home */}

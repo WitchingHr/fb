@@ -65,7 +65,7 @@ const SuggestedFriends: React.FC<SuggestedFriendsProps> = ({
             </Link>
             <div className="flex flex-col justify-between flex-1 gap-1 p-3 pt-1">
               {/* name */}
-              <div className="text-black dark:text-[#e4e6eb]">{user.name}</div>
+              <div className="text-black dark:text-[#e4e6eb] truncate">{user.name}</div>
       
               {/* add friend button */}
               <button

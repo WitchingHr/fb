@@ -16,6 +16,7 @@ import Navbar from "@/app/components/navbars/Navbar";
 import Friends from "@/app/components/profile/Friends";
 import FriendOrEditButton from "@/app/components/profile/FriendOrEditButton";
 import ProfileNavbar from "@/app/components/profile/ProfileNavbar";
+import AllFriends from "@/app/components/profile/AllFriends";
 
 // props
 interface ProfileClientProps {
@@ -119,21 +120,31 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
           <div className="flex-1 dark:bg-[#18191a]">
             <div className="max-w-[1250px]  mx-auto flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 lg:flex-row">
 
-              {/* left column */}
-              <div className="flex-[.75] flex flex-col gap-2 xs:gap-4">
-                <Intro profile={profile.profile!} />
-                <Friends friends={profile.friends} />
-              </div>
+              {selected === "Posts" && (
+                  <>
+                  {/* left column */}
+                  <div className="flex-[.75] flex flex-col gap-2 xs:gap-4">
+                    <Intro profile={profile.profile!} />
+                    <Friends friends={profile.friends} seeAll={() => setSelected("Friends")} />
+                  </div>
 
-              {/* right column */}
-              <div className="flex flex-col flex-1 gap-2 xs:gap-4">
-                {user.id === profile.id && (
-                  <PostPrompt />
-                )}
-                {posts?.map((post) => (
-                  <PostCard post={post} key={post.id} />
-                ))}
-              </div>
+                  {/* right column */}
+                  <div className="flex flex-col flex-1 gap-2 xs:gap-4">
+                    {user.id === profile.id && (
+                      <PostPrompt />
+                    )}
+                    {posts?.map((post) => (
+                      <PostCard post={post} key={post.id} />
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {selected === "About" && (<></>)}
+
+              {selected === "Friends" && (
+                <AllFriends profile={profile} user={currentUser} />
+              )}
               
             </div>
           </div>
