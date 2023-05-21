@@ -40,11 +40,20 @@
 }
 
 .suggested-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 144px);
-  overflow-x: scroll;
-  gap: 8px;
+  display: flex;
+  overflow-x: auto;
   padding: 0 16px 16px 16px;
+  gap: 8px;
+}
+
+.suggested-grid > div {
+  flex: 0 0 144px;
+  height: 220px;
+}
+  
+.sponsored-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }
 
 @layer utilities {

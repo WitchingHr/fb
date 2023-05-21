@@ -26,9 +26,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [selected, setSelected] = useState<String>(profile ? 'User' : 'Home');
 
   return (
-    <div className={`hidden sm:flex flex-col gap-2 px-2 py-4 max-w-[280px]
+    <div className={`hidden sm:flex flex-col gap-2 px-2 py-4 max-w-[280px] text-black dark:text-neutral-400
       bg-white dark:bg-[#242526] z-0 h-full border-neutral-300 dark:border-[#393b3d] border-r lg:border-r-0
-      ${!profile && ('lg:bg-transparent')}
+      ${!profile && ('lg:!bg-transparent')}
       ${profile ? 'bg-white dark:bg-[#242526] lg:!border-r lg:!flex-initial' : ''}`}
     >
       {/* home */}
@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           ${selected === 'Home' ? 'text-[#1a77f2]' : 'text-black dark:text-[#e4e6eb]'}
         `} />
         <div className={`
-          hidden lg:block dark:text-neutral-400
+          hidden lg:block
           ${profile ? 'lg:!hidden' : ''}
         `}>Home</div>
       </Link>
@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         `}
       >
         <Avatar user={user} size={26} />
-        <div className={`hidden lg:block whitespace-nowrap dark:text-neutral-400
+        <div className={`hidden lg:block whitespace-nowrap
           ${profile ? 'lg:!hidden' : ''}
         `}>{user.name}</div>
       </Link>

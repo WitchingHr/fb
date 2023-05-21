@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import { User, UserProfile } from "@/app/types";
+import useProfileModal from "@/app/hooks/useProfileModal";
 
 // props
 interface FriendOrEditButtonProps {
@@ -106,11 +107,16 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
       });
   }
 
+  // profile modal view state
+  const profileModal = useProfileModal();
+
   return (
     <div className="flex gap-2 md:ml-auto md:mt-auto">
       {profile.id === user.id ? (
         // edit profile button if on own profile page
-        <button className={`
+        <button
+          onClick={profileModal.onOpen}
+          className={`
           flex flex-row items-center gap-2 px-4 py-2 transition duration-300 text-black dark:text-[#e4e6eb]
           rounded bg-neutral-200 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
           <MdModeEditOutline size={20} />

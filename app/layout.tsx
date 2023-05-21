@@ -5,6 +5,8 @@ import { Roboto } from 'next/font/google'
 import PostModal from './components/modals/PostModal';
 import UserProvider from './providers/UserProvider';
 import ThemeModal from './components/modals/ThemeModal';
+import ProfileModal from './components/modals/ProfileModal';
+import CoverModal from './components/modals/CoverModal';
 
 
 const font = Roboto({ weight: ['100', '300', '400', '500', '700', '900'], subsets: ['latin'] });
@@ -26,6 +28,8 @@ export default function RootLayout({
         <SignupModal />
         <PostModal  />
         <ThemeModal />
+        <ProfileModal />
+        <CoverModal />
         <UserProvider>
           {children}
         </UserProvider>

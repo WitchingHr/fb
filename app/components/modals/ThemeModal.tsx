@@ -47,9 +47,9 @@ const ThemeModal = () => {
 
   // form body
   const bodyContent = (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 text-neutral-500 dark:text-neutral-400">
       {/* light */}
-        <label className="dark:text-neutral-400" htmlFor="light">Light:</label>
+        <label className="" htmlFor="light">Light:</label>
         <input
           type="radio"
           className="w-10"
@@ -57,7 +57,7 @@ const ThemeModal = () => {
           {...register("theme")}
           value="light" />
       {/* dark */}
-        <label className="dark:text-neutral-400" htmlFor="dark">Dark:</label>
+        <label className="" htmlFor="dark">Dark:</label>
         <input
           type="radio"
           className="w-10"
@@ -65,7 +65,7 @@ const ThemeModal = () => {
           {...register("theme")}
           value="dark" />
       {/* auto */}
-        <label className="dark:text-neutral-400" htmlFor="auto">Automatic:</label>
+        <label className="" htmlFor="auto">Automatic:</label>
         <input
           type="radio"
           className="w-10"

@@ -17,6 +17,10 @@ import Friends from "@/app/components/profile/Friends";
 import FriendOrEditButton from "@/app/components/profile/FriendOrEditButton";
 import ProfileNavbar from "@/app/components/profile/ProfileNavbar";
 import AllFriends from "@/app/components/profile/AllFriends";
+import About from "@/app/components/profile/About";
+import Image from "next/image";
+import useCoverModal from "@/app/hooks/useCoverModal";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
 // props
 interface ProfileClientProps {
@@ -54,6 +58,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
   // check if user is friend
   const isFriend = profile.friends.some((friend) => friend.id === user.id);
 
+  // cover modal
+  const coverModal = useCoverModal();
+
   // selected tab
   const [selected, setSelected] = useState<string>("Posts");
 
@@ -73,7 +80,24 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
           <div className="z-10 bg-white dark:bg-[#242526] border-b shadow-sm border-neutral-300 dark:border-[#393b3d]">
             <div className="max-w-[1250px] mx-auto">
               {/* cover image */}
-              <div className="w-full bg-black h-[25vh] rounded-b-lg"></div>
+              <div className="w-full bg-black h-[25vh] rounded-b-lg overflow-hidden relative">
+                {profile.id === currentUser.id && (
+                  <>
+                    {profile.profile!.cover && (
+                      <Image src={profile.profile!.cover} alt="profile cover image" fill className="object-cover" />
+                    )}
+                    <button
+                      onClick={coverModal.onOpen}
+                      className={`
+                      flex flex-row items-center gap-2 p-4 py-2 bg-transparent transition absolute
+                      duration-300 text-black dark:text-[#e4e6eb] bottom-4 right-4
+                      rounded sm:bg-neutral-200 dark:sm:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] hover:bg-neutral-300`}>
+                      <div className="hidden sm:block">Edit cover photo</div>
+                      <MdOutlineAddPhotoAlternate size={20} className="sm:hidden text-neutral-300" />
+                    </button>
+                  </>
+                )}
+              </div>
 
               <div className="relative flex flex-col items-center justify-center gap-2 px-2 pb-4 xs:px-4 md:flex-row md:justify-start">
                 {/* user avatar */}
@@ -117,7 +141,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
           </div>
 
           {/* lower section: user info, friends, and posts */}
-          <div className="flex-1 dark:bg-[#18191a]">
+          <div className="flex-1 bg-[#f0f2f5] dark:bg-[#18191a]">
             <div className="max-w-[1250px]  mx-auto flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 lg:flex-row">
 
               {selected === "Posts" && (
@@ -140,7 +164,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
                 </>
               )}
 
-              {selected === "About" && (<></>)}
+              {selected === "About" && (
+                <About profile={profile} />
+              )}
 
               {selected === "Friends" && (
                 <AllFriends profile={profile} user={currentUser} />

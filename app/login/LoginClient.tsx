@@ -13,10 +13,16 @@ import { UserContext } from "../providers/UserProvider";
 // components
 import Button from "../components/Button";
 import Input from "../components/inputs/Input";
+import theme from "../lib/theme";
 
 // Login Client
 // login page for client, includes login form and signup modal
 const LoginClient = () => {
+  // set theme
+  useEffect(() => {
+    theme();
+  }, []);
+
   // user context
   const { setUser } = useContext(UserContext);
 
@@ -82,7 +88,7 @@ const LoginClient = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen pt-6 md:pt-36">
+    <div className="flex flex-col h-screen pt-6 md:pt-36 dark:bg-[#18191a]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:max-w-[1024px] mx-auto">
 
         {/* logo and subheading */}

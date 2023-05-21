@@ -56,7 +56,7 @@ const HomeClient: React.FC<HomeClientProps> = ({
     <div className="flex flex-col h-screen">
       <Navbar />
 
-      <div className="flex flex-row h-full dark:bg-[#18191a] overflow-hidden lg:lg-layout-grid">
+      <div className="flex flex-row h-full bg-[#f0f2f5] dark:bg-[#18191a] overflow-hidden lg:lg-layout-grid">
         {/* sidebar */}
         <Sidebar />
 

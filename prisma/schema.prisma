@@ -42,6 +42,7 @@ model Profile {
   education   String?
   bio         String?
   image       String?
+  cover       String?
 
   // profile owner
   user        User     @relation(fields: [userId], references: [id])

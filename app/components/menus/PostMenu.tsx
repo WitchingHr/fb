@@ -70,15 +70,15 @@ const PostMenu: React.FC<PostMenuProps> = ({
     <>
       {isOpen && (
         <ul ref={menuRef} onClick={(e) => e.stopPropagation()}
-          className={`absolute top-[30px] right-0 flex w-[300px] flex-col
+          className={`absolute top-[30px] right-0 flex w-[300px] flex-col dark:bg-[#242526] dark:border-[#393b3d]
             gap-2 p-4 bg-white rounded-md shadow-lg border border-neutral-300`}>
           <button
             onClick={handleDeletePost}
             disabled={isSending}
-            className={`flex flex-row items-center gap-2 transition
-              duration-300 rounded-md cursor-pointer hover:bg-neutral-200`}>
+            className={`flex flex-row items-center gap-2 transition text-neutral-500 dark:text-neutral-400
+              duration-300 rounded-md cursor-pointer hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]`}>
             <div
-              className="flex flex-row items-center justify-center rounded-full w-9 h-9 bg-neutral-200">
+              className="flex flex-row items-center justify-center rounded-full w-9 h-9 bg-neutral-200 dark:bg-[#3a3b3c]">
               <VscTrash size={24} />
             </div>
             <div>Delete post</div>
