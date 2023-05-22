@@ -15,6 +15,7 @@ import { Post } from "@/app/types";
 import Avatar from "../Avatar";
 import PostMenu from "../menus/PostMenu";
 import PostComments from "./PostComments";
+import Image from "next/image";
 
 // props
 interface PostCardProps {
@@ -167,6 +168,13 @@ const PostCard: React.FC<PostCardProps> = ({
         {/* post content */}
         <div className="py-2 text-lg sm:text-2xl text-black dark:text-[#e4e6eb]">{post.content}</div>
 
+        {/* post image */}
+        {post.postImage && (
+          <div className="relative w-full mb-2 overflow-hidden rounded-md aspect-square">
+            <Image alt="post image" src={post.postImage} fill className="object-cover duration-300 hover:scale-110" />
+          </div>
+        )}
+
         {/* display likes count and comments count */}
           <div className="flex text-neutral-500 dark:text-neutral-400">
             {/* likes count */}
@@ -243,9 +251,9 @@ const PostCard: React.FC<PostCardProps> = ({
                   onChange={(e) => {setComment(e.target.value)}}
                   value={comment}
                   ref={inputRef}
-                  className={`flex-1 px-4 py-2 rounded-full bg-neutral-100
+                  className={`flex-1 px-4 py-2 rounded-full bg-neutral-100 text-neutral-500 dark:text-neutral-400
                   hover:bg-neutral-200 duration-300 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50]
-                    focus:outline-none focus:border-2 focus:border-neutral-300 dark:focus:border-neutral-400
+                    focus:outline-none focus:border focus:border-neutral-300 dark:focus:border-neutral-400
                     placeholder:font-light placeholder:text-neutral-500 dark:placeholder:text-neutral-400`}
                   placeholder="Write a comment..."
                 />

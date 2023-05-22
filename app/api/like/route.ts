@@ -55,6 +55,17 @@ export async function POST(req: Request) {
           authorId: user.id,
         },
       });
+
+      // send notification to post author
+      await prisma.notification.create({
+        data: {
+          content: "like",
+          recipientId: post.authorId,
+          authorId: user.id,
+          postId: post.id,
+        },
+      });
+
       return NextResponse.json({ status: 201 });
     }
 

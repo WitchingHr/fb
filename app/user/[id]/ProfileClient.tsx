@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 
-import { Posts, UserProfile, SafeUser } from "@/app/types";
+import { Posts, UserProfile, SafeUser, Notifications } from "@/app/types";
 import { UserContext } from "@/app/providers/UserProvider";
 import theme from "@/app/lib/theme";
 
@@ -21,12 +21,16 @@ import About from "@/app/components/profile/About";
 import Image from "next/image";
 import useCoverModal from "@/app/hooks/useCoverModal";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import Photos from "@/app/components/profile/Photos";
+import { TbPhotoPlus } from "react-icons/tb";
+import useAvatarModal from "@/app/hooks/useAvatarModal";
 
 // props
 interface ProfileClientProps {
   profile: UserProfile;
   posts: Posts;
   currentUser: SafeUser;
+  notifications: Notifications | null;
 }
 
 // Profile Client
@@ -34,7 +38,8 @@ interface ProfileClientProps {
 const ProfileClient: React.FC<ProfileClientProps> = ({
   profile,
   currentUser,
-  posts
+  posts,
+  notifications
 }) => {
   // user context
   const { user, setUser } = useContext(UserContext);
@@ -61,6 +66,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
   // cover modal
   const coverModal = useCoverModal();
 
+  // avatar modal
+  const avatarModal = useAvatarModal();
+
   // selected tab
   const [selected, setSelected] = useState<string>("Posts");
 
@@ -71,7 +79,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
+      <Navbar notifications={notifications}  />
       <div className="flex flex-row flex-1 overflow-hidden">
         <Sidebar profile />
         <div className="flex flex-col flex-1 overflow-y-auto">
@@ -81,29 +89,38 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
             <div className="max-w-[1250px] mx-auto">
               {/* cover image */}
               <div className="w-full bg-black h-[25vh] rounded-b-lg overflow-hidden relative">
+                {profile.profile!.cover && (
+                  <Image src={profile.profile!.cover} alt="profile cover image" fill className="object-cover" />
+                )}
                 {profile.id === currentUser.id && (
-                  <>
-                    {profile.profile!.cover && (
-                      <Image src={profile.profile!.cover} alt="profile cover image" fill className="object-cover" />
-                    )}
-                    <button
-                      onClick={coverModal.onOpen}
-                      className={`
-                      flex flex-row items-center gap-2 p-4 py-2 bg-transparent transition absolute
-                      duration-300 text-black dark:text-[#e4e6eb] bottom-4 right-4
-                      rounded sm:bg-neutral-200 dark:sm:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] hover:bg-neutral-300`}>
-                      <div className="hidden sm:block">Edit cover photo</div>
-                      <MdOutlineAddPhotoAlternate size={20} className="sm:hidden text-neutral-300" />
-                    </button>
-                  </>
+                  <button
+                    onClick={coverModal.onOpen}
+                    className={`
+                    flex flex-row items-center gap-2 p-4 py-2 bg-transparent transition absolute
+                    duration-300 text-black dark:text-[#e4e6eb] bottom-4 right-4
+                    rounded sm:bg-neutral-200 dark:sm:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] hover:bg-neutral-300`}>
+                    <div className="hidden sm:block">Edit cover photo</div>
+                    <MdOutlineAddPhotoAlternate size={20} className="sm:hidden text-neutral-300" />
+                  </button>
                 )}
               </div>
 
               <div className="relative flex flex-col items-center justify-center gap-2 px-2 pb-4 xs:px-4 md:flex-row md:justify-start">
                 {/* user avatar */}
-                <div className="border-4 border-white dark:border-[#242526] w-[170px] rounded-full -top-[85px] absolute md:-top-[30px]">
-                  <Avatar user={userAvatar} size={170} />
-                </div>
+                {profile.id === currentUser.id ? (
+                  <button
+                    onClick={avatarModal.onOpen}
+                    className="group overflow-hidden border-4 border-white dark:border-[#242526] w-[170px] rounded-full -top-[85px] absolute md:-top-[30px]">
+                    <div className="absolute flex items-center justify-center w-full h-full duration-300 opacity-0 group-hover:opacity-100 group-hover:bg-black/30">
+                      <TbPhotoPlus size={50} className="z-50 text-neutral-300"/>
+                    </div>
+                    <Avatar user={userAvatar} size={170} />
+                  </button>
+                ) : (
+                  <div className="border-4 border-white dark:border-[#242526] w-[170px] rounded-full -top-[85px] absolute md:-top-[30px]">
+                    <Avatar user={userAvatar} size={170} />
+                  </div>
+                )}
 
                 <div className="flex flex-col items-center gap-1 mt-[90px] md:mt-0 md:items-start md:ml-[184px] md:h-[136px] md:pt-4">
 
@@ -170,6 +187,10 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
 
               {selected === "Friends" && (
                 <AllFriends profile={profile} user={currentUser} />
+              )}
+
+              {selected === "Photos" && (
+                <Photos profile={profile} />
               )}
               
             </div>

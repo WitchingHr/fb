@@ -11,10 +11,19 @@ import useUserMenuModal from "@/app/hooks/useUserMenuModal";
 // components
 import Avatar from "../Avatar";
 import UserMenu from "../menus/UserMenu";
+import useNotificationsModal from "@/app/hooks/useNotificationsModal";
+import NotificationsModal from "../notifications/NotificationsModal";
+import { Notifications } from "@/app/types";
+
+interface NavbarProps {
+  notifications: Notifications | null;
+}
 
 // Navbar
 // displays logo, search bar, notifications, and profile picture
-const Navbar = () => {
+const Navbar: React.FC<NavbarProps> = ({
+  notifications
+}) => {
   // get user
   const { user } = useContext(UserContext);
 
@@ -27,6 +36,18 @@ const Navbar = () => {
       userMenu.onClose();
     } else {
       userMenu.onOpen();
+    }
+  };
+
+  // notifications modal view state
+  const notifcationsModal = useNotificationsModal();
+
+  // open/close user menu
+  const handleNotifications = () => {
+    if (notifcationsModal.isOpen) {
+      notifcationsModal.onClose();
+    } else {
+      notifcationsModal.onOpen();
     }
   };
 
@@ -45,9 +66,10 @@ const Navbar = () => {
       </div>
 
       <div className="flex flex-row items-center gap-2 ml-auto">
-        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-200 dark:bg-[#3a3b3c] text-black dark:text-[#e4e6eb]">
+        <button onClick={handleNotifications} className="relative flex items-center justify-center w-10 h-10 rounded-full bg-neutral-200 dark:bg-[#3a3b3c] text-black dark:text-[#e4e6eb]">
           <IoMdNotifications size={26} />
-        </div>
+          <NotificationsModal notifications={notifications} isOpen={notifcationsModal.isOpen} />
+        </button>
         <button onClick={handleMenu} className="relative">
           <Avatar user={user} size={40} />
           <UserMenu currentUser={user} isOpen={userMenu.isOpen} />

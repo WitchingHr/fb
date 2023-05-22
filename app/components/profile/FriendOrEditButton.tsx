@@ -161,7 +161,7 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
             onMouseLeave={handleRemoveFriendButton}
             onClick={handleRemoveFriend}
             className={`
-            flex flex-row items-center gap-2 px-4 py-2 transition duration-300
+            flex flex-row items-center gap-2 px-4 py-2 transition duration-300 w-[120px]
             rounded bg-[#35a420] hover:bg-red-600 text-white`}
           >
             {buttonText === "Friends" ? (

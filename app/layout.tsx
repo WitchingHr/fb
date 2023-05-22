@@ -7,6 +7,7 @@ import UserProvider from './providers/UserProvider';
 import ThemeModal from './components/modals/ThemeModal';
 import ProfileModal from './components/modals/ProfileModal';
 import CoverModal from './components/modals/CoverModal';
+import AvatarModal from './components/modals/AvatarModal';
 
 
 const font = Roboto({ weight: ['100', '300', '400', '500', '700', '900'], subsets: ['latin'] });
@@ -23,13 +24,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      {/* <body className={font.className}> */}
+      <body className={`dark:bg-[#18191a] ` + font.className}>
         <Toaster />
         <SignupModal />
         <PostModal  />
         <ThemeModal />
         <ProfileModal />
         <CoverModal />
+        <AvatarModal />
         <UserProvider>
           {children}
         </UserProvider>

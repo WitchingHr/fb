@@ -7,43 +7,37 @@ import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 // hooks
-import usePostModal from "@/app/hooks/usePostModal";
+import useAvatarModal from "@/app/hooks/useAvatarModal";
 
 // components
 import Modal from "./Modal";
 import ImageUpload from "../inputs/ImageUpload";
 
-// Post Modal
-// modal for creating a new post
-const PostModal = () => {
+// Avatar Modal
+// modal for updating profile picture
+const AvatarModal = () => {
   // router
   const router = useRouter();
 
   // view state, open/close modal
-  const postModal = usePostModal();
-
-  // add image
-  const [image, setImage] = useState<boolean>(false);
+  const avatarModal = useAvatarModal();
 
   // sending state
   const [isSending, setIsSending] = useState<boolean>(false);
 
   // form validation
   const {
-    register,
     handleSubmit,
-    formState: { errors },
-    reset,
     watch,
     setValue,
+    reset
   } = useForm<FieldValues>({
     defaultValues: {
-      content: '',
-      postImage: '',
+      image: ''
     }
   });
 
-  const postImage = watch('postImage');
+  const image = watch('image');
 
   // set custom form value
   const setCustomValue = (id: string, value: any) => {
@@ -60,16 +54,16 @@ const PostModal = () => {
     setIsSending(true);
 
     // send data to server
-    axios.post('/api/post', data)
+    axios.post('/api/profile/image', data)
       .then(() => {
         // toast success
-        toast.success('Post created');
+        toast.success('Profile picture updated');
 
         // reset form
         reset();
 
         // close modal
-        postModal.onClose();
+        avatarModal.onClose();
 
         // refresh page
         router.refresh();
@@ -87,42 +81,25 @@ const PostModal = () => {
   // form body
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <textarea
-        rows={5}
-        disabled={isSending}
-        maxLength={240}
-        placeholder="What's on your mind?"
-        className={`p-4 border resize-none dark:bg-[#3a3b3c] dark:border-0 dark:text-neutral-400
-          ${errors.content
-            ? 'border-red-500 focus:border-red-500 placeholder:text-red-500'
-            : 'border-neutral-200'}
-        `}
-        {...register("content", { required: true })}
-      >
-      </textarea>
-      {image === false ? (
-        <button onClick={() => setImage(true)}>Add image</button>
-      ) : (
-        <ImageUpload
-          value={postImage} // get postImage form value
-          onChange={(value) => setCustomValue('postImage', value)} // set postImage form value
-        />
-      )}
+      <ImageUpload
+        value={image} // get image form value
+        onChange={(value) => setCustomValue('image', value)} // set image form value
+      />
     </div>
   );
 
   return (
     <Modal
       disabled={isSending}
-      isOpen={postModal.isOpen}
-      onClose={postModal.onClose}
+      isOpen={avatarModal.isOpen}
+      onClose={avatarModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
-      actionLabel="Submit"
-      title="Create post"
-      subtitle="Share your thoughts with your friends."
+      actionLabel="Update"
+      title="Update Profile Picture"
+      subtitle="Show yourself off to the world!"
       body={bodyContent}
     />
   );
 };
 
-export default PostModal;
+export default AvatarModal;

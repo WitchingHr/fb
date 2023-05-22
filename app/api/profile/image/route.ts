@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
     // destructure body
     const {
-      cover,
+      image,
     } = body;
 
     // get current user
@@ -22,20 +22,18 @@ export async function POST(request: Request) {
       throw new Error("User not found");
     }
 
-    // update profile
+    // update profile picture
     const profile = await prisma.profile.update({
       where: {
         userId: currentUser.id
       },
       data: {
-        cover: cover,
+        image,
         photos: {
-          push: cover
+          push: image
         } 
       }
     });
-
-    console.log(profile)
 
     // return profile
     return NextResponse.json(profile);
@@ -46,4 +44,5 @@ export async function POST(request: Request) {
     return NextResponse.error();
   }
 }
+
 

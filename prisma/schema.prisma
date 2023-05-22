@@ -31,6 +31,11 @@ model User {
   friendsIds        String[]  @db.ObjectId
   friendOf          User[]    @relation("UserFollows", fields: [friendOfIds], references: [id])
   friendOfIds       String[]  @db.ObjectId
+
+  // notifications
+  sentNotifications          Notification[] @relation("author")
+  notifications              Notification[] @relation("recipient")
+  friendAddedNotifications   Notification[] @relation("friend")
 }
 
 model Profile {
@@ -43,6 +48,7 @@ model Profile {
   bio         String?
   image       String?
   cover       String?
+  photos      String[]
 
   // profile owner
   user        User     @relation(fields: [userId], references: [id])
@@ -54,6 +60,7 @@ model Post {
 
   // post content
   content     String
+  postImage   String?
   comments    Comment[]
   likes       Like[]
   createdAt   DateTime  @default(now())
@@ -61,6 +68,9 @@ model Post {
   // post author
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String    @db.ObjectId
+
+  // notifcation
+  notifications Notification[]
 }
 
 model Comment {
@@ -77,6 +87,9 @@ model Comment {
   // commented post
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String   @db.ObjectId
+
+  // notifications
+  notifications Notification[]
 }
 
 model Like {
@@ -89,4 +102,39 @@ model Like {
   // liked post
   post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String?   @db.ObjectId
+
+  // notifications
+  notifications Notification[]
+}
+
+model Notification {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+
+  // notification content
+  content   String
+  createdAt DateTime  @default(now())
+
+  // notification author
+  author    User      @relation("author", fields: [authorId], references: [id])
+  authorId  String    @db.ObjectId
+
+  // notification recipient
+  recipient  User      @relation("recipient", fields: [recipientId], references: [id])
+  recipientId String   @db.ObjectId
+
+  // notification post
+  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String?   @db.ObjectId
+
+  // notification comment
+  comment   Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String?   @db.ObjectId
+
+  // notification like
+  like      Like?     @relation(fields: [likeId], references: [id], onDelete: Cascade)
+  likeId    String?   @db.ObjectId
+
+  // notification friend added
+  friend    User?     @relation("friend", fields: [friendId], references: [id], onDelete: Cascade)
+  friendId  String?   @db.ObjectId
 }

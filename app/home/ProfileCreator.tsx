@@ -139,8 +139,8 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
         <textarea
           rows={5}
           placeholder={errors.bio ? 'Bio required...' : 'Describe yourself in a few words...'}
-          className={`p-4 border resize-none 
-            ${errors.bio ? 'border-red-500 focus:border-red-500 placeholder:text-red-500' : 'border-neutral-200'}
+          className={`p-4 border resize-none dark:bg-[#3a3b3c] dark:text-neutral-400
+            ${errors.bio ? 'border-red-500 focus:border-red-500 placeholder:text-red-500' : 'border-neutral-200 dark:border-0'}
           `}
           {...register("bio", { required: true })}></textarea>
       </div>

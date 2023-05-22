@@ -68,6 +68,15 @@ export async function POST(req: Request, { params }: { params: IParams }) {
       },
     });
 
+    // send notification to friend
+    await prisma.notification.create({
+      data: {
+        content: 'friend',
+        recipientId: id,
+        authorId: user.id,
+      },
+    });
+
     // return friend request
     return NextResponse.json(friend);
 

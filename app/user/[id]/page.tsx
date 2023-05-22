@@ -3,6 +3,7 @@ import getUserById from "@/app/actions/getUserById";
 import ProfileClient from "./ProfileClient";
 import { redirect } from "next/navigation";
 import getPosts from "@/app/actions/getPosts";
+import getNotifications from "@/app/actions/getNotifications";
 
 interface IParams {
   id?: string;
@@ -36,8 +37,16 @@ const UserPage = async ({ params }: { params: IParams}) => {
     redirect('/');
   }
 
+  // get notifications
+  const notifications = await getNotifications();
+
   return (
-    <ProfileClient profile={profile} currentUser={currentUser} posts={posts} />
+    <ProfileClient
+      profile={profile}
+      currentUser={currentUser}
+      posts={posts}
+      notifications={notifications}
+    />
   );
 };
 

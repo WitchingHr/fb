@@ -31,6 +31,29 @@ export async function POST(req: Request) {
       return NextResponse.error();
     }
 
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        authorId: true,
+      },
+    });
+
+    if (!post) {
+      return NextResponse.error();
+    }
+
+    // send notification to post author
+    await prisma.notification.create({
+      data: {
+        content: 'comment',
+        recipientId: post.authorId,
+        postId,
+        authorId: user.id,
+      },
+    });
+
     // return the comment
     return NextResponse.json(comment);
 

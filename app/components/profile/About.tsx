@@ -51,40 +51,100 @@ const About: React.FC<AboutProps> = ({
             >
               Work and education
             </button>
+            <button
+              onClick={() => setSelected("Places lived")}
+              className={`px-2 py-1 rounded-md text-left dark:text-neutral-400
+              ${selected === "Places lived" ? "bg-[#e7f3ff] !text-[#1A77F2] dark:bg-[#263951]" : "hover:bg-[#f0f2f5] dark:hover:bg-[#3a3b3c]"}`}
+            >
+              Places lived
+            </button>
+            <button
+              onClick={() => setSelected("Details about you")}
+              className={`px-2 py-1 rounded-md text-left dark:text-neutral-400
+              ${selected === "Details about you" ? "bg-[#e7f3ff] !text-[#1A77F2] dark:bg-[#263951]" : "hover:bg-[#f0f2f5] dark:hover:bg-[#3a3b3c]"}`}
+            >
+              Details about you
+            </button>
           </div>
 
         </div>
 
         {/* right */}
         <div className="flex flex-row flex-1">
-          <div className="flex flex-col flex-1 gap-4 p-4">
-            <div className="flex gap-2">
-              <MdHome size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
-              <div className="font-light text-black dark:text-[#e4e6eb]">
-                Lives in
-                <span className="font-medium"> {location}</span>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <MdOutlineWork size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
-              <div className="font-light text-black dark:text-[#e4e6eb]">
-                Works as
-                <span className="font-medium"> {job}</span>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <IoSchool size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
-              <div className="font-light text-black dark:text-[#e4e6eb]">
-                Went to school at
-                <span className="font-medium"> {education}</span>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <BsFillPersonLinesFill size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
-              <div className="font-light text-black dark:text-[#e4e6eb]">
-                {bio}
-              </div>
-            </div>
+          <div className="flex flex-col flex-1 gap-4 p-4 md:mt-12">
+            {selected === "Overview" && (
+              <>
+                <div className="flex gap-2">
+                  <MdHome size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    Lives in
+                    <span className="font-medium"> {location}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <MdOutlineWork size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    Works as
+                    <span className="font-medium"> {job}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <IoSchool size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    Went to school at
+                    <span className="font-medium"> {education}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <BsFillPersonLinesFill size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    {bio}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {selected === "Work and education" && (
+              <>
+                <div className="flex gap-2">
+                  <MdOutlineWork size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    Works as
+                    <span className="font-medium"> {job}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <IoSchool size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    Went to school at
+                    <span className="font-medium"> {education}</span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {selected === "Places lived" && (
+              <>
+                <div className="flex gap-2">
+                  <MdHome size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    Lives in
+                    <span className="font-medium"> {location}</span>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {selected === "Details about you" && (
+              <>
+                <div className="flex gap-2">
+                  <BsFillPersonLinesFill size={20} className="text-neutral-500 dark:text-neutral-400 min-w-[20px]" />
+                  <div className="font-light text-black dark:text-[#e4e6eb]">
+                    {bio}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           <div className="p-4">
             <button

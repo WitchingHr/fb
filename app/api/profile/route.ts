@@ -46,7 +46,8 @@ export async function POST(request: Request) {
         job,
         education,
         bio,
-        image
+        image,
+        photos: [image]
       }
     });
 

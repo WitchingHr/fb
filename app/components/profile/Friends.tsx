@@ -26,7 +26,7 @@ const Friends: React.FC<FriendsProps> = ({
         {/* see all friends button */}
         <button
           onClick={seeAll}
-          className="text-[#1b74e4] hover:bg-[#e7f3ff] px-3 py-1 rounded-md duration-300"
+          className="text-[#1b74e4] hover:bg-[#e7f3ff] dark:hover:bg-[#3a3b3c] px-3 py-1 rounded-md duration-300"
         >
           See all friends
         </button>
@@ -44,9 +44,9 @@ const Friends: React.FC<FriendsProps> = ({
             className="flex flex-col gap-1 ">
 
             {/* friend avatar */}
-            <div className="relative w-full aspect-square">
+            <div className="relative w-full overflow-hidden rounded-md aspect-square">
               <Image src={friend.image || "/images/placeholder.jpg"} fill
-                alt="friend profile picture" className="object-cover rounded-md" />
+                alt="friend profile picture" className="object-cover duration-300 hover:scale-110" />
             </div>
 
             {/* friend name */}
