@@ -127,7 +127,7 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
     heading = "Tell us about yourself";
     subheading = "This information will let your friends know more about you.";
     body = (
-      <div className="flex flex-col gap-4 max-w-[400px]">
+      <div className="flex flex-col gap-4 max-w-[400px] h-screen">
         <Input
           id="location"
           label="Location"

@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { NextApiResponse } from "next";
 
 import prisma from "@/app/lib/dbConnect";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
 // like post
-export async function POST(req: Request, res: NextApiResponse) {
+export async function POST(req: Request) {
   try {
     // get current user
     const user = await getCurrentUser();
@@ -52,7 +51,7 @@ export async function POST(req: Request, res: NextApiResponse) {
       }
 
       // return 204 No Content
-      return res.status(204);
+      return NextResponse.json({ status: 204 });
 
     } else {
     // if user has not liked the post, create a new like
@@ -70,7 +69,7 @@ export async function POST(req: Request, res: NextApiResponse) {
 
       // check if post author is the same as the current user
       if (post.authorId === user.id) {
-        return res.status(201);
+        return NextResponse.json({ status: 201 });
       }
 
       // otherwise, send notification to post author
@@ -84,7 +83,7 @@ export async function POST(req: Request, res: NextApiResponse) {
       });
 
       // return 201 Created
-      return res.status(201);
+      return NextResponse.json({ status: 201 });
     }
   } catch (error: any) {
     // if error

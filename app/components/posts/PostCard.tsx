@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { VscComment } from "react-icons/vsc";
 import { GoKebabHorizontal } from "react-icons/go";
+import { RiSendPlaneFill } from "react-icons/ri";
 
 import { UserContext } from "@/app/providers/UserProvider";
 import { Post } from "@/app/types";
@@ -16,7 +17,6 @@ import { Post } from "@/app/types";
 import Avatar from "../common/Avatar";
 import PostMenu from "../menus/PostMenu";
 import PostComments from "./PostComments";
-import { RiSendPlaneFill } from "react-icons/ri";
 
 // props
 interface PostCardProps {
@@ -125,7 +125,7 @@ const PostCard: React.FC<PostCardProps> = ({
     await axios.post("/api/like", data)
       .then((res) => {
         // get response status code
-        const response = res.status;
+        const response = res.data.status;
 
         // toast success
         if (response === 201) {

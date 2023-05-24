@@ -68,7 +68,7 @@ const HomeClient: React.FC<HomeClientProps> = ({
 
         {/* post wall */}
         <div
-          className="grow flex flex-col gap-2 xs:gap-4 max-w-[680px] 
+          className="grow flex flex-col gap-2 xs:gap-4 max-w-[680px] overflow-x-hidden 
           lg:post-wall mx-auto lg:mx-4 px-2 xs:px-4 lg:px-0 py-2 xs:py-4"
         >
           {/* create post button */}
