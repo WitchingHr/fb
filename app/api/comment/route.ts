@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.redirect("/");
     }
 
-    // get data from request
+    // get data from request body
     const { content, postId } = await req.json();
 
     // Create a new comment
@@ -28,9 +28,10 @@ export async function POST(req: Request) {
 
     // if error creating comment
     if (!comment) {
-      return NextResponse.error();
+      throw new Error("Error creating comment");
     }
 
+    // get post author id
     const post = await prisma.post.findUnique({
       where: {
         id: postId,
@@ -41,10 +42,15 @@ export async function POST(req: Request) {
     });
 
     if (!post) {
-      return NextResponse.error();
+      throw new Error("Post not found");
     }
 
-    // send notification to post author
+    // check if post author is the same as the current user
+    if (post.authorId === user.id) {
+      return NextResponse.json(comment);
+    }
+
+    // otherwise, send notification to post author
     await prisma.notification.create({
       data: {
         content: 'comment',
@@ -57,8 +63,8 @@ export async function POST(req: Request) {
     // return the comment
     return NextResponse.json(comment);
 
-  } catch (error) {
-    // return error
-    return NextResponse.error();
+  } catch (error: any) {
+    // if error
+    console.error(error);
   }
 }

@@ -5,10 +5,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-// hooks
 import useSignupModal from "@/app/hooks/useSignupModal";
 
-// components
 import Modal from "./Modal";
 import Input from "../inputs/Input";
 
@@ -18,7 +16,7 @@ const SignupModal = () => {
   // view state, open/close modal
   const signupModal = useSignupModal();
 
-  // sending state
+  // sending state for disabling inputs
   const [isSending, setIsSending] = useState<boolean>(false);
 
   // form validation
@@ -53,9 +51,9 @@ const SignupModal = () => {
         // close modal
         signupModal.onClose();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error creating account");
       })
       .finally(() => {
         // re-enable inputs
@@ -66,10 +64,38 @@ const SignupModal = () => {
   // form body
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Input id="firstName" label="First name" register={register} errors={errors} disabled={isSending} required/>
-      <Input id="lastName" label="Last name" register={register} errors={errors} disabled={isSending} required/>
-      <Input id="email" label="Email" type="email" register={register} errors={errors} disabled={isSending} required/>
-      <Input id="password" label="Password" type="password" register={register} errors={errors} disabled={isSending} required/>
+      <Input
+        id="firstName"
+        label="First name"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
+      <Input
+        id="lastName"
+        label="Last name"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
+      <Input
+        id="email"
+        label="Email" type="email"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
+      <Input
+        id="password"
+        label="Password" type="password"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
     </div>
   );
 

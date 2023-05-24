@@ -1,34 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Facebook Clone
 
-## Getting Started
+### Description
 
-First, run the development server:
+Faithful reproduction of Facebook, built with React, NextJS, TailwindCSS, NextAuth, MongoDB, and Prisma.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Table of Contents
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   [Features](#features)
+-   [Live Demo](#live-demo)
+-   [Installation](#installation)
+-   [Screenshots](#screenshots)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+### Features
 
-To learn more about Next.js, take a look at the following resources:
+- User Authentication
+- Post feed
+- Create and delete posts
+- Upload photos
+- Comment on posts
+- Like posts
+- Create and edit a user profile
+- Personalize profile with cover photo and profile picture
+- View other user profiles and their posts
+- View user's friends
+- Add and remove friends
+- Suggested friends
+- Notifications
+- Mobile responsive design
+- Dark mode
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Live Demo
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone the repo
+    ```sh
+    git clone git@github.com:WitchingHr/fb.git
+    ```
+
+2. Install NPM packages
+    ```sh
+    npm install
+    ```
+
+3. Create a `.env` file in the root directory and add the following environment variables
+    ```sh
+    DATABASE_URL=your_database_url
+    NEXTAUTH_SECRET=your_nextauth_secret
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+    ```
+    -   `DATABASE_URL` is the URL to your MongoDB database
+    -   `NEXTAUTH_SECRET` is a secret string used by NextAuth
+    -   `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` is your Cloudinary cloud name
+
+4. Run the development server
+    ```sh
+    npm run dev
+    ```
+
+5. Open [http://localhost:3000](http://localhost:3000)
+
+---
+
+### Screenshots
+

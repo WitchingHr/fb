@@ -8,12 +8,12 @@
   min-width: 320px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     background-color: #18191a;
     color: #e4e6eb;
   }
-}
+} */
 
 .sidebar-selected::before {
   content: "";
@@ -60,5 +60,9 @@
   .lg-layout-grid {
     display: grid;
     grid-template-columns: 1fr 680px 1fr;
+  }
+
+  .post-wall {
+    grid-column-start: 2;
   }
 }

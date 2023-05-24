@@ -24,7 +24,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* <body className={font.className}> */}
       <body className={`dark:bg-[#18191a] ` + font.className}>
         <Toaster />
         <SignupModal />

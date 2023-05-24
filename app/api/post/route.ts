@@ -1,18 +1,23 @@
+import { NextResponse } from 'next/server';
+
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import prisma from '@/app/lib/dbConnect';
-import { NextResponse } from 'next/server';
 
 // create new post
 export async function POST(req: Request) {
   try {
+    // get data from request body
     const { content, postImage } = await req.json();
 
+    // get current user
     const currentUser = await getCurrentUser();
 
+    // if user not logged in, redirect to home page
     if (!currentUser) {
       return NextResponse.redirect('/');
     }
 
+    // create new post
     const post = await prisma.post.create({
       data: {
         content,
@@ -21,12 +26,14 @@ export async function POST(req: Request) {
       },
     });
 
+    // if error creating post
     if (!post) {
-      throw new Error('Post not created');
+      throw new Error('Error creating post');
     }
 
+    // if post has image, add image to profile
     if (postImage) {
-      await prisma.profile.update({
+      const image = await prisma.profile.update({
         where: {
           userId: currentUser.id,
         },
@@ -36,13 +43,17 @@ export async function POST(req: Request) {
           },
         },
       });
+
+      // if error adding image to profile
+      if (!image) {
+        throw new Error('Error adding image to profile');
+      }
     }
 
     return NextResponse.json(post)
 
-  } catch (error) {
+  } catch (error: any) {
     // if error, return error
-    console.log(error);
-    return NextResponse.error();
+    console.error(error);
   }
 }

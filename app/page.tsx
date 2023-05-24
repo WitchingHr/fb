@@ -1,6 +1,5 @@
 import getCurrentUser from "./actions/getCurrentUser";
 
-import Container from "./components/Container";
 import LoginClient from "./login/LoginClient";
 import HomeClient from "./home/HomeClient";
 import getAllPosts from "./actions/getAllPosts";
@@ -13,11 +12,7 @@ export default async function Home() {
   const currentUser = await getCurrentUser();
 
   // if user is not logged in render login page
-  if (!currentUser) return (
-    <Container>
-      <LoginClient />
-    </Container>
-  );
+  if (!currentUser) return <LoginClient />;
 
   // get posts
   const posts = await getAllPosts();

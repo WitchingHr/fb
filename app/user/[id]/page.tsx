@@ -1,7 +1,8 @@
+import { notFound, redirect } from "next/navigation";
+
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import getUserById from "@/app/actions/getUserById";
 import ProfileClient from "./ProfileClient";
-import { redirect } from "next/navigation";
 import getPosts from "@/app/actions/getPosts";
 import getNotifications from "@/app/actions/getNotifications";
 
@@ -9,16 +10,8 @@ interface IParams {
   id?: string;
 }
 
+// fetches user profile and posts and renders profile page
 const UserPage = async ({ params }: { params: IParams}) => {
-  const { id } = params;
-
-  if (!id) {
-    throw new Error('Not found');
-  }
-
-  // get profile by id
-  const profile = await getUserById(params);
-
   // get current user
   const currentUser = await getCurrentUser();
 
@@ -26,16 +19,24 @@ const UserPage = async ({ params }: { params: IParams}) => {
     redirect('/');
   }
 
+  // get id from params
+  const { id } = params;
+
+  // if no id, throw error
+  if (!id) {
+    notFound();
+  }
+
+  // get profile by id
+  const profile = await getUserById(params);
+
+  // if no profile, redirect to home
   if (!profile) {
-    throw new Error('Profile not found');
+    notFound();
   }
 
   // get user posts
   const posts = await getPosts(id);
-
-  if (!currentUser) {
-    redirect('/');
-  }
 
   // get notifications
   const notifications = await getNotifications();

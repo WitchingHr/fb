@@ -44,7 +44,6 @@ export type Post = {
 
 export type Posts = Post[] | null;
 
-
 export type Notification = {
   id: string;
   content: string;

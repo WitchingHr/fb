@@ -1,18 +1,17 @@
 "use client"
 
-import { FieldValues, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import axios from "axios";
 import { toast } from "react-hot-toast";
 
 import { SafeUser } from "../types";
 
 // components
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 import Input from "../components/inputs/Input";
 import ImageUpload from "../components/inputs/ImageUpload";
-import Container from "../components/Container";
 
 // props
 interface ProfileCreatorProps {
@@ -32,9 +31,16 @@ enum STEPS {
 const ProfileCreator: React.FC<ProfileCreatorProps> = ({
   currentUser,
 }) => {
+  // set initial step
   const [step, setStep] = useState<STEPS>(STEPS.WELCOME);
+
+  // sending state for disabling submit button
   const [isSending, setIsSending] = useState<boolean>(false);
+  
+  // state for animating heading
   const [showHeading, setShowHeading] = useState<boolean>(false);
+
+  // form data
   const [formData, setFormData] = useState<FieldValues>({
     location: '',
     job: '',
@@ -95,16 +101,15 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
 
     // send request
     axios.post('/api/profile', {...formData, userId: currentUser.id})
-      .then((res) => {
+      .then(() => {
         // toast success
         toast.success('Profile created');
-
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error('Something went wrong');
+        toast.error('Error creating profile');
       })
       .finally(() => {
         // re-enable button
@@ -123,9 +128,27 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
     subheading = "This information will let your friends know more about you.";
     body = (
       <div className="flex flex-col gap-4 max-w-[400px]">
-        <Input id="location" label="Location" register={register} errors={errors} required />
-        <Input id="job" label="Job Title" register={register} errors={errors} required />
-        <Input id="education" label="Education" register={register} errors={errors} required />
+        <Input
+          id="location"
+          label="Location"
+          register={register}
+          errors={errors}
+          required
+        />
+        <Input
+          id="job"
+          label="Job Title"
+          register={register}
+          errors={errors}
+          required
+        />
+        <Input
+          id="education"
+          label="Education"
+          register={register}
+          errors={errors}
+          required
+        />
       </div>
     );
   }
@@ -138,11 +161,21 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
       <div className="flex flex-col gap-4 max-w-[400px]">
         <textarea
           rows={5}
-          placeholder={errors.bio ? 'Bio required...' : 'Describe yourself in a few words...'}
-          className={`p-4 border resize-none dark:bg-[#3a3b3c] dark:text-neutral-400
-            ${errors.bio ? 'border-red-500 focus:border-red-500 placeholder:text-red-500' : 'border-neutral-200 dark:border-0'}
+          placeholder={
+            errors.bio
+              ? 'Bio required...'
+              : 'Describe yourself in a few words...'
+          }
+          className={`
+            p-4 border resize-none dark:bg-[#3a3b3c] dark:text-neutral-400
+            ${errors.bio
+              ? 'border-red-500 focus:border-red-500 placeholder:text-red-500'
+              : 'border-neutral-200 dark:border-0'
+            }
           `}
-          {...register("bio", { required: true })}></textarea>
+          {...register("bio", { required: true })}
+          >
+          </textarea>
       </div>
     );
   }
@@ -153,20 +186,32 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
     subheading = "This will be shown on your profile.";
     body = (
       <div className="flex flex-col gap-4 max-w-[400px]">
-        <ImageUpload onChange={(value) => setFormData({...formData, image: value})} value={formData.image} />
+        <ImageUpload
+          value={formData.image}
+          onChange={(value) => setFormData({...formData, image: value})}
+        />
       </div>
     );
   }
 
   return (
-    <Container>
-      <div className={`grid grid-cols-1 lg:grid-cols-2 lg:h-screen mx-auto px-4 py-16 duration-1000
-        ${showHeading ? 'opacity-100' : 'opacity-0'}`}
+    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 xl:px-20">
+      <div
+        className={`
+          grid grid-cols-1 lg:grid-cols-2 lg:h-screen
+          mx-auto px-4 py-16 duration-1000
+          ${showHeading ? 'opacity-100' : 'opacity-0'}
+        `}
       >
         {/* heading */}
         <div className="flex flex-col gap-4 pb-8 lg:mt-40 lg:pr-8">
-          <h1 className="text-2xl font-medium">{heading}</h1>
-          <p className="text-xl text-neutral-500">{subheading}</p>
+          <h1 className="text-2xl font-medium">
+            {heading}
+          </h1>
+          <p className="text-xl text-neutral-500">
+            {subheading}
+          </p>
+          {/* if on step one */}
           {step === STEPS.WELCOME && (
             <p className="text-lg text-neutral-500">
               Click Next to get started...
@@ -175,14 +220,24 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
         </div>
         <div className="max-w-[400px] mx-auto w-full">
           {/* form */}
-          <form onSubmit={handleSubmit(saveData)} className="flex flex-col justify-between w-full h-full gap-4 mx-auto lg:justify-center">
+          <form
+            onSubmit={handleSubmit(saveData)}
+            className="flex flex-col justify-between w-full h-full gap-4 mx-auto lg:justify-center"
+          >
+
+            {/* form body */}
             {body}
-            {/* buttons */}
-            <Button submit disabled={isSending} label={step === STEPS.PIC ? 'Finish' : 'Next'} />
+
+            {/* submit button */}
+            <Button
+              submit
+              disabled={isSending}
+              label={step === STEPS.PIC ? 'Finish' : 'Next'}
+            />
           </form>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 

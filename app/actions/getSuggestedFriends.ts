@@ -16,12 +16,12 @@ const getSuggestedFriends = async () => {
     const allOtherUsers = await prisma.user.findMany({
       where: {
         id: {
-          notIn: user.friendsIds,
-          not: user.id,
+          notIn: user.friendsIds, // not a friend
+          not: user.id, // not the current user
         },
       },
       select: {
-        id: true,
+        id: true, // only select the id
       }
     });
 
@@ -31,7 +31,7 @@ const getSuggestedFriends = async () => {
     // shuffle the array of ids and select the first 5
     const randomUserIds = fisherYatesShuffle(allOtherUsersIds).slice(0, 5);
 
-    // fetch the 5 random users
+    // fetch the 5 users
     const suggested = await prisma.user.findMany({
       where: {
         id: {
@@ -49,12 +49,12 @@ const getSuggestedFriends = async () => {
       },
     });
 
-    // add the image to the suggested friends
+    // restructure the suggested user objects
     const suggestedFriends = suggested.map((friend) => {
-      const { profile, ...friendInfo } = friend;
+      const { profile, ...otherProps } = friend;
 
       return {
-        ...friendInfo,
+        ...otherProps,
         image: profile?.image,
       }
     });
@@ -63,13 +63,13 @@ const getSuggestedFriends = async () => {
     return suggestedFriends;
 
   } catch (error) {
+    // if error, log and return null
     console.error(error);
     return null;
   }
 }
 
-export default getSuggestedFriends;
-
+// Fisher-Yates shuffle algorithm
 function fisherYatesShuffle(array: string[]) {
   let count = array.length;
 
@@ -86,3 +86,5 @@ function fisherYatesShuffle(array: string[]) {
 
   return array;
 }
+
+export default getSuggestedFriends;

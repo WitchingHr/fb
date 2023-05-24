@@ -1,9 +1,10 @@
 import prisma from "../lib/dbConnect";
-import { DateTime } from "luxon";
+import sanitizePosts from "../lib/sanitizePosts";
 
-// get posts by user
+// get posts by user id
 const getPosts = async (id: string) => {
   try {
+    // fetch posts, newest first
     const posts = await prisma.post.findMany({
       where: {
         authorId: id,
@@ -11,7 +12,7 @@ const getPosts = async (id: string) => {
       orderBy: {
         createdAt: 'desc',
       },
-      take: 10,
+      take: 10, // limit to 10 posts
       include: {
         author: { // post author
           select: {
@@ -26,7 +27,7 @@ const getPosts = async (id: string) => {
         },
         likes: { // post likes
           select: {
-            author: {
+            author: { // like author
               select: {
                 id: true,
                 name: true,
@@ -41,7 +42,7 @@ const getPosts = async (id: string) => {
         },
         comments: { // post comments
           include: {
-            author: {
+            author: { // comment author
               select: {
                 id: true,
                 name: true,
@@ -57,62 +58,19 @@ const getPosts = async (id: string) => {
       },
     });
 
-    // sort and sanitize post data
-    const safePosts = posts.map((post) => {
-      // destructure post
-      const { createdAt, comments, likes, author, authorId, ...otherProps } = post;
+    // if no posts, return null
+    if (!posts) {
+      return null;
+    }
 
-      // post author
-      const postAuthor = {
-        id: author.id,
-        name: author.name,
-        image: author.profile?.image,
-      };
+    // sanitize posts (see app/lib/sanitizePosts.ts)
+    const safePosts = sanitizePosts(posts);
     
-      // post comments
-      const safeComments = comments.map((comment) => {
-        const { createdAt, authorId, author, ...otherCommentProps } = comment;
-
-        const commentAuthor = {
-          id: author.id,
-          name: author.name,
-          image: author.profile?.image,
-        };
-
-        return {
-          ...otherCommentProps,
-          author: commentAuthor,
-          createdAt: DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED),
-        };
-      });
-
-      // post likes
-      const safeLikes = likes.map((like) => {
-        const { author } = like;
-
-        const likeAuthor = {
-          id: author.id,
-          name: author.name,
-          image: author.profile?.image,
-        };
-
-        return {
-          author: likeAuthor,
-        };
-      });
-    
-      return {
-        ...otherProps,
-        author: postAuthor,
-        createdAt: DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED),
-        comments: safeComments,
-        likes: safeLikes,
-      };
-    });
-    
+    // return sanitized posts to client
     return safePosts;
     
   } catch (error) {
+    // if error, log and return null
     console.error(error);
     return null;
   }

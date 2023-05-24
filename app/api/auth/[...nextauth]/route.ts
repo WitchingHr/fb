@@ -1,10 +1,11 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { AuthOptions } from "next-auth";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 
 import prisma from "@/app/lib/dbConnect";
 
+// next auth configuration
 export const authOptions: AuthOptions = {
   // use prisma
   adapter: PrismaAdapter(prisma),
@@ -55,7 +56,7 @@ export const authOptions: AuthOptions = {
   ],
   pages: {
     // redirect to home page after sign in
-    signIn: "/home",
+    signIn: "/",
   },
   session: {
     strategy: "jwt",

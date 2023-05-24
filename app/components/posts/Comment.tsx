@@ -1,14 +1,14 @@
 "use client"
 
-import { useContext } from "react";
-import { UserContext } from "@/app/providers/UserProvider";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
+import { UserContext } from "@/app/providers/UserProvider";
 import { Comment } from "@/app/types";
 
-import Avatar from "../Avatar";
+import Avatar from "../common/Avatar";
 import Link from "next/link";
 
 // props
@@ -29,19 +29,18 @@ const Comment: React.FC<CommentProps> = ({
 
   // delete comment
   const handleDeleteComment = async () => {
-    try {
-      // make request
-      await axios.delete(`/api/comment/${comment.id}`);
-
-      // show success message
-      toast.success("Comment deleted successfully!");
-
-      // reload page
-      router.refresh();
-    } catch (error: any) {
-      // show error message
-      toast.error(error.response.data.message);
-    }
+    // make request
+    await axios.delete(`/api/comment/${comment.id}`)
+      .then(() => {
+        // show success message
+        toast.success("Comment deleted successfully!");
+        // reload page
+        router.refresh();
+      })
+      .catch(() => {
+        // toast error
+        toast.error("Error deleting comment");
+      });
   };
 
   return (
@@ -54,7 +53,8 @@ const Comment: React.FC<CommentProps> = ({
         {/* comment author */}
         <Link
           href={`/user/${comment.author.id}`}
-          className="text-sm hover:underline max-w-min whitespace-nowrap text-black dark:text-[#e4e6eb]"
+          className="max-w-min text-sm whitespace-nowrap
+          text-black dark:text-[#e4e6eb] hover:underline"
         >
           {comment.author.name}
         </Link>
@@ -64,12 +64,18 @@ const Comment: React.FC<CommentProps> = ({
 
         {/* comment time */}
         <div className="flex gap-2 text-neutral-500 dark:text-neutral-400">
-          <div className="text-xs font-light">{comment.createdAt}</div>
+          <div className="text-xs font-light">
+            {comment.createdAt}
+          </div>
+          
+          {/* if author, show delete button */}
           {comment.author.id === user.id && (
             <button
               onClick={handleDeleteComment}
               className="hidden ml-auto text-xs hover:underline group-hover:block"
-            >Delete comment</button>
+            >
+              Delete comment
+            </button>
           )}
         </div>
       </div>

@@ -3,10 +3,8 @@
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-// hooks
 import useThemeModal from "@/app/hooks/useThemeModal";
 
-// components
 import Modal from "./Modal";
 import theme from "@/app/lib/theme";
 
@@ -31,6 +29,7 @@ const ThemeModal = () => {
 
   // form submit
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    // toast success and save theme to local storage
     if (data.theme === "light") {
       toast.success("Theme set to light");
       localStorage.setItem("theme", "light");
@@ -41,7 +40,9 @@ const ThemeModal = () => {
       toast.success("Theme set to automatic");
       localStorage.removeItem("theme");
     }
+    // close modal
     themeModal.onClose();
+    // set theme
     theme();
   };
 

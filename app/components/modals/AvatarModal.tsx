@@ -6,10 +6,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-// hooks
 import useAvatarModal from "@/app/hooks/useAvatarModal";
 
-// components
 import Modal from "./Modal";
 import ImageUpload from "../inputs/ImageUpload";
 
@@ -22,7 +20,7 @@ const AvatarModal = () => {
   // view state, open/close modal
   const avatarModal = useAvatarModal();
 
-  // sending state
+  // sending state for disabling inputs
   const [isSending, setIsSending] = useState<boolean>(false);
 
   // form validation
@@ -37,9 +35,10 @@ const AvatarModal = () => {
     }
   });
 
+  // get form value to pass to ImageUpload
   const image = watch('image');
 
-  // set custom form value
+  // set custom form value, called by ImageUpload
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
@@ -68,9 +67,9 @@ const AvatarModal = () => {
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error updating profile picture");
       })
       .finally(() => {
         // re-enable inputs

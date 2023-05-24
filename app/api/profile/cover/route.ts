@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     // if no current user, throw error
     if (!currentUser) {
-      throw new Error("User not found");
+      return NextResponse.redirect("/");
     }
 
     // update profile
@@ -28,22 +28,18 @@ export async function POST(request: Request) {
         userId: currentUser.id
       },
       data: {
-        cover: cover,
+        cover: cover, // update cover
         photos: {
-          push: cover
+          push: cover // add cover to user's photos
         } 
       }
     });
 
-    console.log(profile)
-
     // return profile
     return NextResponse.json(profile);
 
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     // if error, return error
-    return NextResponse.error();
+    console.error(error); 
   }
 }
-

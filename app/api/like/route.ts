@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { NextApiResponse } from "next";
 
 import prisma from "@/app/lib/dbConnect";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
-export async function POST(req: Request) {
+// like post
+export async function POST(req: Request, res: NextApiResponse) {
   try {
     // get current user
     const user = await getCurrentUser();
@@ -25,7 +27,7 @@ export async function POST(req: Request) {
 
     // if post does not exist
     if (!post) {
-      return NextResponse.error();
+      throw new Error("Post not found");
     }
 
     // check if user has already liked the post
@@ -38,25 +40,40 @@ export async function POST(req: Request) {
 
     // if user has already liked the post, delete the like
     if (like) {
-      await prisma.like.delete({
+      const deleted = await prisma.like.delete({
         where: {
           id: like.id,
         },
       });
 
-      return NextResponse.json({ status: 204 });
-    }
+      // if error deleting like
+      if (!deleted) {
+        throw new Error("Error unliking post");
+      }
 
+      // return 204 No Content
+      return res.status(204);
+
+    } else {
     // if user has not liked the post, create a new like
-    if (!like) {
-      await prisma.like.create({
+      const liked = await prisma.like.create({
         data: {
           postId,
           authorId: user.id,
         },
       });
 
-      // send notification to post author
+      // if error creating like
+      if (!liked) {
+        throw new Error("Error liking post");
+      }
+
+      // check if post author is the same as the current user
+      if (post.authorId === user.id) {
+        return res.status(201);
+      }
+
+      // otherwise, send notification to post author
       await prisma.notification.create({
         data: {
           content: "like",
@@ -66,12 +83,11 @@ export async function POST(req: Request) {
         },
       });
 
-      return NextResponse.json({ status: 201 });
+      // return 201 Created
+      return res.status(201);
     }
-
-  } catch (error) {
+  } catch (error: any) {
     // if error
-    console.log(error);
-    return NextResponse.error();
+    console.error(error);
   }
 }

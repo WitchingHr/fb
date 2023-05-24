@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import prisma from "@/app/lib/dbConnect";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
@@ -30,21 +31,26 @@ export async function DELETE(request: Request, { params } : {params: IParams}) {
     });
 
     if (!post) {
-      return NextResponse.error();
+      throw new Error("Post not found");
     }
 
     // delete post
-    await prisma.post.delete({
+    const deleted = await prisma.post.delete({
       where: {
         id: postId,
       },
     });
 
-    // return deleted post
-    return NextResponse.json(post);
+    // if error deleting post
+    if (!deleted) {
+      throw new Error("Error deleting post");
+    }
 
-  } catch (error) {
+    // return deleted post
+    return NextResponse.json(deleted);
+
+  } catch (error: any) {
     // if error
-    return NextResponse.error();
+    console.error(error);
   }
 }

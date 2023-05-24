@@ -1,19 +1,23 @@
 "use client"
 
-import { SafeUser, User } from "@/app/types";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import axios from "axios";
 import { toast } from "react-hot-toast";
 import { BsPersonCheckFill, BsPersonDashFill, BsPersonPlusFill } from "react-icons/bs";
 
+import { SafeUser, User } from "@/app/types";
+
+// props
 interface AmigoProps {
   friend: User;
   user: SafeUser;
 }
 
+// Amigo
+// shows a friend, allows adding/removing friend
 const Amigo: React.FC<AmigoProps> = ({
   friend,
   user
@@ -47,9 +51,9 @@ const Amigo: React.FC<AmigoProps> = ({
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error adding friend");
       })
       .finally(() => {
         setIsSending(false);
@@ -68,9 +72,9 @@ const Amigo: React.FC<AmigoProps> = ({
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error removing friend");
       })
       .finally(() => {
         setIsSending(false);
@@ -79,20 +83,24 @@ const Amigo: React.FC<AmigoProps> = ({
 
   return (
     <div
-      className="flex flex-row gap-2 xs:gap-4 items-center border border-neutral-300 dark:border-[#393b3d] p-2 xs:p-4 rounded-md"
+      className="flex flex-row items-center gap-2 xs:gap-4 p-2 xs:p-4
+      border border-neutral-300 dark:border-[#393b3d] rounded-md"
     >
       
-      {/* image */}
+      {/* friend image, links to profile */}
       <Link
         href={`/user/${friend.id}`}
         className="relative w-[36px] xs:w-[48px] sm:w-[80px] shrink-0 aspect-square"
       >
-        <Image src={friend.image || "/images/placeholder.jpg"} fill
-          alt="friend profile picture" className="object-cover rounded-md"
+        <Image
+          src={friend.image || "/images/placeholder.jpg"}
+          fill
+          alt="friend profile picture"
+          className="object-cover rounded-md"
         />
       </Link>
 
-      {/* friend name */}
+      {/* friend name, links to profile */}
       <Link
         href={`/user/${friend.id}`}
         className="text-sm text-black dark:text-[#e4e6eb] min-w-[60px] shrink whitespace-normal truncate hover:underline"
@@ -100,6 +108,7 @@ const Amigo: React.FC<AmigoProps> = ({
         {friend.name}
       </Link>
 
+      {/* add/remove button, hidden if user is friend */}
       {friend.id !== user.id && (
         <div className="ml-auto">
           {user.friendsIds.includes(friend.id) ? (
@@ -108,8 +117,9 @@ const Amigo: React.FC<AmigoProps> = ({
               onClick={() => handleRemoveFriend(friend.id)}
               onMouseEnter={handleRemoveFriendButton}
               onMouseLeave={handleRemoveFriendButton}
-              className="p-1 duration-300 rounded-full text-neutral-500 
-              dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-[#3a3b3c]"
+              className="p-1 duration-300 rounded-full
+              text-neutral-500 dark:text-neutral-400
+              hover:bg-neutral-100 dark:hover:bg-[#3a3b3c]"
             >
               {hover === "Friends" ? (
                 <BsPersonCheckFill size={20} className="text-[#35a420]" />
@@ -121,8 +131,9 @@ const Amigo: React.FC<AmigoProps> = ({
             <button
               disabled={isSending}
               onClick={() => handleAddFriend(friend.id)}
-              className="p-1 duration-300 rounded-full text-neutral-500
-              dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-[#3a3b3c]"
+              className="p-1 duration-300 rounded-full
+              text-neutral-500 dark:text-neutral-400
+              hover:bg-neutral-100 dark:hover:bg-[#3a3b3c]"
             >
               <BsPersonPlusFill size={20} />
             </button>

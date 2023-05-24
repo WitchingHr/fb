@@ -1,18 +1,17 @@
 "use client"
 
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-
-import useUserMenuModal from "@/app/hooks/useUserMenuModal";
-import { User } from "@/app/types";
-
-// components
-import Avatar from "../Avatar";
 import { BsFillMoonFill, BsSunFill } from "react-icons/bs";
-import useThemeModal from "@/app/hooks/useThemeModal";
 import { MdAutorenew } from "react-icons/md";
+
+import { User } from "@/app/types";
+import useUserMenuModal from "@/app/hooks/useUserMenuModal";
+import useThemeModal from "@/app/hooks/useThemeModal";
+
+import Avatar from "../common/Avatar";
 
 // props
 interface UserMenuProps {
@@ -21,26 +20,31 @@ interface UserMenuProps {
 }
 
 // User Menu
-// dropdown menu for user profile link and logout
+// dropdown menu in navbar
+// contains profile link, theme setting, and logout
 const UserMenu: React.FC<UserMenuProps> = ({
   currentUser,
   isOpen
 }) => {
+  // router
   const router = useRouter();
+
   // user menu modal view state
   const userMenu = useUserMenuModal();
 
-  // ref to menu
+  // ref to menu for click outside
   const menuRef = useRef<HTMLUListElement>(null);
 
   // close menu when clicked outside
   useEffect(() => {
     if (isOpen) {
+      // close menu when clicked outside
       const handleClickOutside = (event: MouseEvent) => {
         if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
           userMenu.onClose();
         }
       };
+      // add event listener
       document.addEventListener("click", handleClickOutside);
       return () => {
         document.removeEventListener("click", handleClickOutside);
@@ -48,7 +52,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
     }
   }, [isOpen, userMenu]);
 
+  // go to current users profile
   const handleGoToProfile = () => {
+    // close menu
     userMenu.onClose();
     router.push(`/user/${currentUser.id}`);
   };
@@ -68,33 +74,60 @@ const UserMenu: React.FC<UserMenuProps> = ({
   return (
     <>
       {isOpen && (
-        <ul ref={menuRef} onClick={(e) => e.stopPropagation()}
-          className={`absolute top-[48px] -right-4 sm:right-0 flex w-screen sm:w-[300px] border border-x-0 sm:border-x dark:border-[#393b3d] border-neutral-300
-            flex-col gap-2 p-4 bg-white dark:bg-[#242526] md:rounded-md shadow-2xl text-black dark:text-[#e4e6eb]`}>
-          <div onClick={handleGoToProfile} className="p-1 border rounded-md shadow-md border-neutral-300 dark:border-[#393b3d]">
-            <div className={`flex flex-row items-center gap-2 p-3
-              duration-300 rounded-md hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]`}>
+        <ul
+          ref={menuRef}
+          onClick={(e: React.MouseEvent<HTMLUListElement>) => e.stopPropagation()}
+          className="absolute top-[48px] -right-4 sm:right-0
+          flex flex-col gap-2 p-4 w-screen sm:w-[300px]
+        bg-white dark:bg-[#242526] text-black dark:text-[#e4e6eb]
+          border border-x-0 sm:border-x border-neutral-300 dark:border-[#393b3d]
+          md:rounded-md shadow-2xl "
+        >
+          {/* user profile button */}
+          <div
+            role="button"
+            onClick={handleGoToProfile}
+            className="p-1 border border-neutral-300 dark:border-[#393b3d] rounded-md shadow-md"
+          >
+            <div className="flex flex-row items-center gap-2 p-3
+              rounded-md duration-300 hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]"
+            >
+              {/* user avatar */}
               <Avatar user={currentUser} size={36} />
+
+              {/* name */}
               <div>{currentUser.name}</div>
             </div>
           </div>
 
-          {/* logout */}
+          {/* logout button */}
           <div
+            role="button"
             onClick={() => signOut()}
-            className="flex flex-row items-center gap-2 px-4 duration-300 rounded-md hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]">
-            <div className="flex flex-row items-center justify-center rounded-full w-9 h-9 bg-neutral-200 dark:bg-[#3a3b3c]">
+            className="flex flex-row items-center gap-2 px-4
+            rounded-md duration-300 hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]"
+          >
+            <div
+              className="flex flex-row items-center justify-center w-9 h-9
+              bg-neutral-200 dark:bg-[#3a3b3c] rounded-full "
+            >
+              {/* logout icon */}
               <RiLogoutBoxRFill size={24} />
             </div>
             <div>Log Out</div>
           </div>
 
-          {/* theme */}
+          {/* theme button */}
           <div
+            role="button"
             onClick={handleThemeModalOpen}
-            className="flex flex-row items-center gap-2 px-4 duration-300 rounded-md hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]">
-            <div className="flex flex-row items-center justify-center rounded-full w-9 h-9 bg-neutral-200 dark:bg-[#3a3b3c]">
-
+            className="flex flex-row items-center gap-2 px-4
+            rounded-md duration-300 hover:bg-neutral-200 dark:hover:bg-[#3a3b3c]"
+          >
+            <div
+              className="flex flex-row items-center justify-center w-9 h-9
+              bg-neutral-200 dark:bg-[#3a3b3c] rounded-full"
+            >
               {/* update icon according to theme */}
               {currentTheme === "dark" ? (
                 <BsFillMoonFill size={24} />

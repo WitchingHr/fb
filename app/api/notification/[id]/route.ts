@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import prisma from "@/app/lib/dbConnect";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 
@@ -7,7 +8,7 @@ interface IParams {
   id: string;
 }
 
-// delete notification
+// delete a notification
 export async function DELETE(request: Request, { params } : {params: IParams}) {
   try {
     // get current user
@@ -28,13 +29,16 @@ export async function DELETE(request: Request, { params } : {params: IParams}) {
       },
     });
 
+    // if error deleting notification
+    if (!notification) {
+      throw new Error("Error deleting notification");
+    }
+
     // return deleted post
     return NextResponse.json(notification);
 
-  } catch (error) {
+  } catch (error: any) {
     // if error
-    console.log(error);
-    return NextResponse.error();
+    console.error(error);
   }
 }
-

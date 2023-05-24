@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     // if no current user, throw error
     if (!currentUser) {
-      throw new Error("User not found");
+      return NextResponse.redirect("/");
     }
 
     // update profile picture
@@ -28,9 +28,9 @@ export async function POST(request: Request) {
         userId: currentUser.id
       },
       data: {
-        image,
+        image, // update profile picture
         photos: {
-          push: image
+          push: image // add picture to user's photos
         } 
       }
     });
@@ -38,11 +38,8 @@ export async function POST(request: Request) {
     // return profile
     return NextResponse.json(profile);
 
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     // if error, return error
-    return NextResponse.error();
+    console.error(error);
   }
 }
-
-

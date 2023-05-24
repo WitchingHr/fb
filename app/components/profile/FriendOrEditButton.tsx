@@ -1,19 +1,19 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import { MdModeEditOutline } from "react-icons/md";
-import { BsPersonCheckFill, BsPersonDashFill, BsPersonPlusFill } from "react-icons/bs";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { MdModeEditOutline } from "react-icons/md";
+import { BsPersonCheckFill, BsPersonDashFill, BsPersonPlusFill } from "react-icons/bs";
 
-import { User, UserProfile } from "@/app/types";
+import { UserContext } from "@/app/providers/UserProvider";
+import { UserProfile } from "@/app/types";
 import useProfileModal from "@/app/hooks/useProfileModal";
 
 // props
 interface FriendOrEditButtonProps {
   profile: UserProfile;
-  user: User;
   isFriend: boolean;
 }
 
@@ -22,9 +22,11 @@ interface FriendOrEditButtonProps {
 // or edit profile if on own profile page
 const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
   profile,
-  user,
   isFriend,
 }) => {
+  // user
+  const { user } = useContext(UserContext);
+
   // state for mobile
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -34,6 +36,7 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
       setIsMobile(true);
     }
 
+    // handle resize
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setIsMobile(true);
@@ -42,6 +45,7 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
       }
     }
 
+    // add event listener
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -77,9 +81,9 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error adding friend");
       })
       .finally(() => {
         setIsSending(false);
@@ -107,7 +111,7 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
       });
   }
 
-  // profile modal view state
+  // profile modal view state, for editing profile
   const profileModal = useProfileModal();
 
   return (
@@ -116,9 +120,13 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
         // edit profile button if on own profile page
         <button
           onClick={profileModal.onOpen}
-          className={`
-          flex flex-row items-center gap-2 px-4 py-2 transition duration-300 text-black dark:text-[#e4e6eb]
-          rounded bg-neutral-200 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] hover:bg-neutral-300 md:ml-auto md:mt-auto`}>
+          className="flex flex-row items-center gap-2 px-4 py-2
+          md:ml-auto md:mt-auto rounded
+          text-black dark:text-[#e4e6eb]
+          bg-neutral-200 dark:bg-[#3a3b3c]
+          duration-300 hover:bg-neutral-300 dark:hover:bg-[#4e4f50]"
+        >
+          {/* icon */}
           <MdModeEditOutline size={20} />
           <div>Edit profile</div>
         </button>
@@ -127,29 +135,30 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
         // ON MOBILE: show two buttons, friends and remove friend
         isMobile ? (
           <>
-          {/* friends */}
-          <button
-            disabled={true}
-            // change button text on hover in
-            className={`
-            flex flex-row items-center gap-2 px-4 py-2
-            cursor-not-allowed rounded bg-[#35a420] text-white`}
-          >
-            <BsPersonCheckFill size={20} />
-            <div>{buttonText}</div>
-          </button>
+            {/* friends */}
+            <button
+              disabled={true}
+              // change button text on hover in
+              className="flex flex-row items-center gap-2 px-4 py-2
+              text-white bg-[#35a420] rounded cursor-not-allowed"
+            >
+              {/* icon */}
+              <BsPersonCheckFill size={20} />
+              <div>{buttonText}</div>
+            </button>
 
-          {/* remove friend */}
-          <button
-            disabled={isSending}
-            onClick={handleRemoveFriend}
-            className={`
-            flex flex-row items-center gap-2 px-4 py-2
-            rounded bg-neutral-500 dark:bg-[#3a3b3c] dark:hover:bg-[#4e4f50] text-white`}
-          >
-            <BsPersonDashFill size={20} />
-            <div>Remove</div>
-          </button>
+            {/* remove friend */}
+            <button
+              disabled={isSending}
+              onClick={handleRemoveFriend}
+              className="flex flex-row items-center gap-2 px-4 py-2
+            bg-neutral-500 dark:bg-[#3a3b3c] text-white
+            dark:hover:bg-[#4e4f50] rounded"
+            >
+              {/* icon */}
+              <BsPersonDashFill size={20} />
+              <div>Remove</div>
+            </button>
           </>
         ) : (
 
@@ -160,9 +169,9 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
             onMouseEnter={handleRemoveFriendButton}
             onMouseLeave={handleRemoveFriendButton}
             onClick={handleRemoveFriend}
-            className={`
-            flex flex-row items-center gap-2 px-4 py-2 transition duration-300 w-[120px]
-            rounded bg-[#35a420] hover:bg-red-600 text-white`}
+            className="flex flex-row items-center gap-2 w-[120px]
+            px-4 py-2 bg-[#35a420] text-white 
+            duration-300 hover:bg-red-600 rounded"
           >
             {buttonText === "Friends" ? (
               <BsPersonCheckFill size={20} />
@@ -178,10 +187,11 @@ const FriendOrEditButton: React.FC<FriendOrEditButtonProps> = ({
         <button
           disabled={isSending}
           onClick={handleAddFriend}
-          className={`
-          flex flex-row items-center gap-2 px-4 py-2 transition duration-300
-          rounded bg-[#1b74e4] hover:bg-[#1663c2] text-white`}
+          className="flex flex-row items-center gap-2 px-4 py-2
+          text-white bg-[#1b74e4]
+          duration-300 hover:bg-[#1663c2] rounded"
         >
+          {/* icon */}
           <BsPersonPlusFill size={20} />
           <div>Add Friend</div>
         </button>

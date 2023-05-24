@@ -6,10 +6,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-// hooks
 import usePostModal from "@/app/hooks/usePostModal";
 
-// components
 import Modal from "./Modal";
 import ImageUpload from "../inputs/ImageUpload";
 
@@ -22,10 +20,10 @@ const PostModal = () => {
   // view state, open/close modal
   const postModal = usePostModal();
 
-  // add image
+  // add image state, toggle image upload
   const [image, setImage] = useState<boolean>(false);
 
-  // sending state
+  // sending state for disabling inputs
   const [isSending, setIsSending] = useState<boolean>(false);
 
   // form validation
@@ -43,9 +41,10 @@ const PostModal = () => {
     }
   });
 
+  // get form value to pass to ImageUpload
   const postImage = watch('postImage');
 
-  // set custom form value
+  // set custom form value, called by ImageUpload
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
@@ -74,9 +73,9 @@ const PostModal = () => {
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error creating post");
       })
       .finally(() => {
         // re-enable inputs
@@ -92,15 +91,16 @@ const PostModal = () => {
         disabled={isSending}
         maxLength={240}
         placeholder="What's on your mind?"
-        className={`p-4 border resize-none dark:bg-[#3a3b3c] dark:border-0 dark:text-neutral-400
-          ${errors.content
-            ? 'border-red-500 focus:border-red-500 placeholder:text-red-500'
-            : 'border-neutral-200'}
-        `}
+        className={`p-4 dark:bg-[#3a3b3c] dark:text-neutral-400
+        border dark:border-0 resize-none
+        ${errors.content
+          ? 'border-red-500 focus:border-red-500 placeholder:text-red-500'
+          : 'border-neutral-200'}`}
         {...register("content", { required: true })}
       >
       </textarea>
       {image === false ? (
+        // toggle image upload
         <button onClick={() => setImage(true)}>Add image</button>
       ) : (
         <ImageUpload

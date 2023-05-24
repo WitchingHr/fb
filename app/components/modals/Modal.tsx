@@ -1,10 +1,8 @@
 "use client";
 
-// dependencies
 import { useEffect, useState } from "react";
 
-// components
-import Button from "../Button";
+import Button from "../common/Button";
 
 // props
 interface ModalProps {
@@ -32,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({
 	body,
 	footer,
 }) => {
-  // modal state
+  // modal state for animation
   const [showModal, setShowModal] = useState(isOpen);
 
   // animade slide in on modal open
@@ -47,16 +45,24 @@ const Modal: React.FC<ModalProps> = ({
 
 	return (
     // modal backdrop, closes modal on click
-		<div onClick={onClose} className="fixed z-50 w-screen h-screen bg-gray-500/50">
+		<div
+      role="dialog"
+      onClick={onClose}
+      className="fixed z-50 w-screen h-screen bg-gray-500/50">
 
       {/* modal */}
 			<div
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
-        className={`flex flex-col pb-4 bg-white dark:bg-[#242526] h-screen w-screen sm:max-w-[400px]
-        sm:h-min sm:rounded sm:mt-24 shadow-xl mx-auto duration-300
-        ${showModal ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
+        className={`flex flex-col pb-4 mx-auto sm:mt-24
+        h-screen w-screen sm:max-w-[400px] sm:h-min 
+        bg-white dark:bg-[#242526] 
+        sm:rounded shadow-xl duration-300
+        ${showModal ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`} // animate slide in
       >
-        <div className="flex justify-between px-4 py-3 border-b border-neutral-300 dark:border-[#393b3d]">
+        <div
+          className="flex justify-between px-4 py-3
+          border-b border-neutral-300 dark:border-[#393b3d]"
+        >
         
           {/* heading */}
           <div className="flex flex-col gap-1">
@@ -80,7 +86,12 @@ const Modal: React.FC<ModalProps> = ({
         <div>{footer}</div>
         
         {/* submit button */}
-        <Button label={actionLabel} disabled={disabled} onClick={onSubmit} secondary />
+        <Button
+          label={actionLabel}
+          disabled={disabled}
+          onClick={onSubmit}
+          secondary
+        />
 			</div>
 		</div>
 	);

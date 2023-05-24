@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/lib/dbConnect";
 
 // create new profile
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
     // get body from request
-    const body = await request.json();
+    const body = await req.json();
 
     // destructure body
     const {
@@ -46,16 +46,16 @@ export async function POST(request: Request) {
         job,
         education,
         bio,
-        image,
-        photos: [image]
+        image, // add profile picture to profile
+        photos: [image] // add profile picture to user's photos
       }
     });
 
     // return profile
     return NextResponse.json(profile);
 
-  } catch (error) {
+  } catch (error: any) {
     // if error, return error
-    return NextResponse.error();
+    console.error(error);
   }
 }

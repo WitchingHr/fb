@@ -1,23 +1,27 @@
-import prisma from "../lib/dbConnect";
 import { DateTime } from "luxon";
-import getCurrentUser from "./getCurrentUser";
 
-// get all posts
+import prisma from "../lib/dbConnect";
+import getCurrentUser from "./getCurrentUser";
+import sanitizePosts from "../lib/sanitizePosts";
+
+// get posts of the current user and their friends
 const getAllPosts = async () => {
   try {
+    // get current user
     const currentUser = await getCurrentUser();
     
+    // if no user found, throw error
     if (!currentUser) {
       throw new Error('No user found');
     }
 
-    // create an array of user ids to fetch posts for
+    // create an array of user's friends
     const userIds = currentUser.friendsIds;
 
-    // include the current user's id
+    // include the current user
     userIds.push(currentUser.id);
     
-    // Fetch the posts of the user and all their friends, sorted by `createdAt`
+    // fetch the posts of the user and all their friends, newest first
     const allPosts = await prisma.post.findMany({
       where: {
         authorId: {
@@ -25,7 +29,7 @@ const getAllPosts = async () => {
         },
       },
       orderBy: {
-        createdAt: 'desc', // sort by createdAt in descending order
+        createdAt: 'desc', // sort by newest first
       },
       take: 25, // limit to 25 posts
       include: {
@@ -42,7 +46,7 @@ const getAllPosts = async () => {
         },
         likes: { // post likes
           select: {
-            author: {
+            author: { // like author
               select: {
                 id: true,
                 name: true,
@@ -57,7 +61,7 @@ const getAllPosts = async () => {
         },
         comments: { // post comments
           include: {
-            author: {
+            author: { // comment author
               select: {
                 id: true,
                 name: true,
@@ -73,63 +77,19 @@ const getAllPosts = async () => {
       },
     });
 
-    // sort and sanitize post data
-    const safePosts = allPosts.map((post) => {
-      // destructure post
-      const { createdAt, comments, likes, author, authorId, ...otherProps } = post;
+    // if no posts found, throw error
+    if (!allPosts) {
+      throw new Error('No posts found');
+    }
 
-      // post author
-      const postAuthor = {
-        id: author.id,
-        name: author.name,
-        image: author.profile?.image,
-      };
+    // sanitize posts (see app/lib/sanitizePosts.ts)
+    const safePosts = sanitizePosts(allPosts);
     
-      // post comments
-      const safeComments = comments.map((comment) => {
-        const { createdAt, authorId, author, ...otherCommentProps } = comment;
-
-        const commentAuthor = {
-          id: author.id,
-          name: author.name,
-          image: author.profile?.image,
-        };
-
-        return {
-          ...otherCommentProps,
-          author: commentAuthor,
-          createdAt: DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED),
-        };
-      });
-
-      // post likes
-      const safeLikes = likes.map((like) => {
-        const { author } = like;
-
-        const likeAuthor = {
-          id: author.id,
-          name: author.name,
-          image: author.profile?.image,
-        };
-
-        return {
-          author: likeAuthor,
-        };
-      });
-    
-      return {
-        ...otherProps,
-        author: postAuthor,
-        createdAt: DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED),
-        comments: safeComments,
-        likes: safeLikes,
-      };
-    });
-    
+    // return sanitized posts to client
     return safePosts;
 
-
   } catch (error) {
+    // if error, log error and return null
     console.error(error);
     return null;
   }

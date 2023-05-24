@@ -1,18 +1,17 @@
 "use client"
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-// hooks
 import useProfileModal from "@/app/hooks/useProfileModal";
 
-// components
 import Modal from "./Modal";
 import Input from "../inputs/Input";
-import { useRouter } from "next/navigation";
 
+// form steps
 enum STEPS {
   INFO,
   BIO
@@ -27,10 +26,10 @@ const ProfileModal = () => {
   // view state, open/close modal
   const profileModal = useProfileModal();
 
-  // sending state
+  // sending state for disabling inputs
   const [isSending, setIsSending] = useState<boolean>(false);
 
-  // form step
+  // form step state
   const [step, setStep] = useState<STEPS>(STEPS.INFO);
 
   // form data
@@ -75,9 +74,9 @@ const ProfileModal = () => {
 
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error updating profile");
       })
       .finally(() => {
         // re-enable inputs
@@ -86,28 +85,55 @@ const ProfileModal = () => {
   };
 
   // form body
+  // step 1
   let bodyContent = (
     <div className="flex flex-col gap-4">
-      <Input id="location" label="Location" register={register} errors={errors} disabled={isSending} required/>
-      <Input id="job" label="Job" register={register} errors={errors} disabled={isSending} required/>
-      <Input id="education" label="Education" type="education" register={register} errors={errors} disabled={isSending} required/>
+      <Input
+        id="location"
+        label="Location"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
+      <Input
+        id="job"
+        label="Job"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
+      <Input
+        id="education"
+        label="Education" type="education"
+        register={register}
+        errors={errors}
+        disabled={isSending}
+        required
+      />
     </div>
   );
 
+  // step 2
   if (step === STEPS.BIO) {
     bodyContent = (
       <textarea
         rows={5}
         placeholder={errors.bio ? 'Bio required...' : 'Bio'}
-        className={`p-4 border resize-none w-full rounded-md dark:bg-[#3a3b3c] dark:text-neutral-400
-          ${errors.bio ? 'border-red-500 focus:border-red-500 placeholder:text-red-500' : 'border-neutral-200 dark:border-0'}
-        `}
+        className={`p-4 w-full resize-none dark:bg-[#3a3b3c]
+        dark:text-neutral-400 border rounded-md 
+        ${errors.bio
+          ? 'border-red-500 focus:border-red-500 placeholder:text-red-500'
+          : 'border-neutral-200 dark:border-0'}`}
         {...register("bio", { required: true })}>
       </textarea>
     );
   }
 
   // handle form step
+  // trick: merge previous data with new data
+  // and pass to next function to avoid submitting incomplete data
   const saveData = (data: FieldValues) => {
 
     setFormData(prevData => {

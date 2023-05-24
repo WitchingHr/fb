@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     // if no current user, throw error
     if (!currentUser) {
-      throw new Error("User not found");
+      return NextResponse.redirect("/");
     }
 
     // update profile
@@ -41,9 +41,9 @@ export async function POST(request: Request) {
     // return profile
     return NextResponse.json(profile);
 
-  } catch (error) {
+  } catch (error: any) {
     // if error, return error
-    return NextResponse.error();
+    console.error(error);
   }
 }
 

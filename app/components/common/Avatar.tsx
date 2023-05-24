@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+
 import { User } from "@/app/types/";
 
 // props
@@ -13,6 +14,7 @@ interface AvatarProps {
 
 // Avatar
 // displays user profile picture, or placeholder if none
+// if button prop is true, avatar is a link to user's profile
 const Avatar: React.FC<AvatarProps> = ({
   user,
   size,

@@ -6,15 +6,13 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-// hooks
 import useCoverModal from "@/app/hooks/useCoverModal";
 
-// components
 import Modal from "./Modal";
 import ImageUpload from "../inputs/ImageUpload";
 
-// Post Modal
-// modal for creating a new post
+// Cover Modal
+// modal for updating cover image
 const CoverModal = () => {
   // router
   const router = useRouter();
@@ -22,12 +20,11 @@ const CoverModal = () => {
   // view state, open/close modal
   const coverModal = useCoverModal();
 
-  // sending state
+  // sending state for disabling inputs
   const [isSending, setIsSending] = useState<boolean>(false);
 
   // form validation
   const {
-    register,
     handleSubmit,
     watch,
     setValue,
@@ -38,9 +35,10 @@ const CoverModal = () => {
     }
   });
 
+  // get form value to pass to ImageUpload
   const cover = watch('cover');
 
-  // set custom form value
+  // set custom form value, called by ImageUpload
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
@@ -69,9 +67,9 @@ const CoverModal = () => {
         // refresh page
         router.refresh();
       })
-      .catch((err) => {
+      .catch(() => {
         // toast error
-        toast.error(err.response.data.message);
+        toast.error("Error updating cover image");
       })
       .finally(() => {
         // re-enable inputs
