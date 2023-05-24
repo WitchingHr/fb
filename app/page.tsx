@@ -6,6 +6,8 @@ import getAllPosts from "./actions/getAllPosts";
 import getSuggestedFriends from "./actions/getSuggestedFriends";
 import getNotifications from "./actions/getNotifications";
 
+export const dynamic = 'force-dynamic';
+
 // Home page
 export default async function Home() {
   // get current user

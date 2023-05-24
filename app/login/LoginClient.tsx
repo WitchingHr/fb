@@ -66,19 +66,16 @@ const LoginClient = () => {
       ...data,
       redirect: false,
     }).then((res) => {
-
-      if (res?.ok) {
-        // toast success
+      if (res?.ok && !res?.error) {
+        // Successful authentication without errors
         toast.success('Logged in successfully');
-
         // refresh page
         router.refresh();
+      } else {
+        // Error during authentication
+        toast.error(res?.error || 'An error occurred');
       }
 
-      if (res?.error) {
-        // toast error
-        toast.error(res.error);
-      }
     }).finally(() => {
       // re-enable button
       setIsSending(false)

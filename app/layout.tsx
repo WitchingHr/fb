@@ -1,7 +1,8 @@
 import { Toaster } from 'react-hot-toast';
-import SignupModal from './components/modals/SignupModal';
-import './globals.css'
 import { Roboto } from 'next/font/google'
+import './globals.css'
+
+import SignupModal from './components/modals/SignupModal';
 import PostModal from './components/modals/PostModal';
 import UserProvider from './providers/UserProvider';
 import ThemeModal from './components/modals/ThemeModal';

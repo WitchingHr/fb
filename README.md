@@ -4,16 +4,12 @@
 
 Faithful reproduction of Facebook, built with React, NextJS, TailwindCSS, NextAuth, MongoDB, and Prisma.
 
----
-
 ### Table of Contents
 
 -   [Features](#features)
 -   [Live Demo](#live-demo)
 -   [Installation](#installation)
 -   [Screenshots](#screenshots)
-
----
 
 ### Features
 
@@ -33,11 +29,9 @@ Faithful reproduction of Facebook, built with React, NextJS, TailwindCSS, NextAu
 - Mobile responsive design
 - Dark mode
 
----
 
 ### Live Demo
 
----
 
 ### Installation
 
@@ -68,7 +62,4 @@ Faithful reproduction of Facebook, built with React, NextJS, TailwindCSS, NextAu
 
 5. Open [http://localhost:3000](http://localhost:3000)
 
----
-
 ### Screenshots
-

@@ -48,7 +48,6 @@ const Intro: React.FC<IntroProps> = ({
         <IoSchool size={20} />
       </UserInfo>
       <UserInfo
-        label="Bio"
         value={profile.bio}
         bio
       >

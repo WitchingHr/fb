@@ -1,5 +1,3 @@
-import { DateTime } from "luxon";
-
 import prisma from "../lib/dbConnect";
 import getCurrentUser from "./getCurrentUser";
 import sanitizePosts from "../lib/sanitizePosts";

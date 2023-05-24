@@ -6,6 +6,8 @@ import ProfileClient from "./ProfileClient";
 import getPosts from "@/app/actions/getPosts";
 import getNotifications from "@/app/actions/getNotifications";
 
+export const dynamic = 'force-dynamic';
+
 interface IParams {
   id?: string;
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
@@ -9,6 +9,7 @@ import { Posts, UserProfile, SafeUser, Notifications } from "@/app/types";
 import setTheme from "@/app/lib/theme";
 import useAvatarModal from "@/app/hooks/useAvatarModal";
 import useCoverModal from "@/app/hooks/useCoverModal";
+import { UserContext } from "@/app/providers/UserProvider";
 
 import Sidebar from "@/app/components/navbars/Sidebar";
 import Avatar from "@/app/components/common/Avatar";
@@ -39,6 +40,17 @@ const ProfileClient: React.FC<ProfileClientProps> = ({
   posts,
   notifications
 }) => {
+
+  const { setUser } = useContext(UserContext);
+
+  // reset user
+  useEffect(() => {
+    setUser({
+      id: currentUser.id,
+      name: currentUser.name,
+      image: currentUser.profile?.image
+    });
+  }, [setUser, currentUser]);
 
   // profile user avatar
   const userAvatar = {

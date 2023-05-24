@@ -1,12 +1,13 @@
 "use client"
 
+import { useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import useThemeModal from "@/app/hooks/useThemeModal";
 
 import Modal from "./Modal";
-import theme from "@/app/lib/theme";
+import setTheme from "@/app/lib/theme";
 
 // Theme Modal
 // modal for setting theme
@@ -14,8 +15,12 @@ const ThemeModal = () => {
   // view state, open/close modal
   const themeModal = useThemeModal();
 
+  const themeRef = useRef<string | null>(null);
+
   // get current theme
-  const currentTheme = localStorage.getItem("theme");
+  useEffect(() => {
+    themeRef.current = localStorage.getItem("theme");
+  }, []);
 
   // form, default theme is current theme
   const {
@@ -23,7 +28,7 @@ const ThemeModal = () => {
     handleSubmit,
   } = useForm<FieldValues>({
     defaultValues: {
-      theme: currentTheme || "auto"
+      theme: themeRef.current || "auto"
     }
   });
 
@@ -43,7 +48,7 @@ const ThemeModal = () => {
     // close modal
     themeModal.onClose();
     // set theme
-    theme();
+    setTheme();
   };
 
   // form body
