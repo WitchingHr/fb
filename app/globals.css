@@ -8,13 +8,6 @@
   min-width: 320px;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    background-color: #18191a;
-    color: #e4e6eb;
-  }
-} */
-
 .sidebar-selected::before {
   content: "";
   position: absolute;
@@ -64,5 +57,9 @@
 
   .post-wall {
     grid-column-start: 2;
+  }
+
+  .sidebar {
+    height: calc(100vh - 57px);
   }
 }

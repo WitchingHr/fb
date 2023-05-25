@@ -32,6 +32,7 @@ Faithful reproduction of Facebook, built with React, NextJS, TailwindCSS, NextAu
 
 ### Live Demo
 
+[https://fb-witchinghr.vercel.app/](https://fb-witchinghr.vercel.app/)
 
 ### Installation
 
@@ -63,3 +64,9 @@ Faithful reproduction of Facebook, built with React, NextJS, TailwindCSS, NextAu
 5. Open [http://localhost:3000](http://localhost:3000)
 
 ### Screenshots
+
+![](/docs/images/Screenshot%202023-05-25%20at%209.37.09%20AM.png)
+
+![](/docs/images/Screenshot%202023-05-25%20at%209.40.08%20AM.png)
+![](/docs/images/Screenshot%202023-05-25%20at%209.40.43%20AM.png)
+![](/docs/images/Screenshot%202023-05-25%20at%209.46.34%20AM.png)

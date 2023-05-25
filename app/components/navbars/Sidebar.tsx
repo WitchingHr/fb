@@ -26,12 +26,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div
-      // position fixed on lg screens, sticky on sm screens
       className={`
-        z-0 sticky top-0 hidden sm:flex flex-col gap-2 px-2 py-4 h-full
+        z-0 sticky top-[57px] hidden sm:flex flex-col gap-2 px-2 py-4 sidebar
         bg-white dark:bg-[#242526] text-black dark:text-neutral-400 
         border-r lg:border-r-0 border-neutral-300 dark:border-[#393b3d]
-        ${!profile && ('lg:fixed lg:top-[57px] lg:w-[180px] lg:!bg-transparent')}
+        ${!profile && ('lg:w-[180px] lg:!bg-transparent')}
         ${profile && ('lg:!flex-initial bg-white dark:bg-[#242526] lg:!border-r')}
       `}
     >

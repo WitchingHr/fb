@@ -79,7 +79,35 @@ const LoginClient = () => {
     }).finally(() => {
       // re-enable button
       setIsSending(false)
-  });
+    });
+  };
+
+  const handleGuestLogin = async () => {
+    if (isSending) return;
+
+    // disable button
+    setIsSending(true);
+
+    // authenticate user
+    signIn('credentials', {
+      email: 'guest@mail.com',
+      password: 'guest',
+      redirect: false,
+    }).then((res) => {
+      if (res?.ok && !res?.error) {
+        // Successful authentication without errors
+        toast.success('Logged in successfully');
+        // refresh page
+        router.refresh();
+      } else {
+        // Error during authentication
+        toast.error(res?.error || 'An error occurred');
+      }
+
+    }).finally(() => {
+      // re-enable button
+      setIsSending(false)
+    });
   };
 
   return (
@@ -140,6 +168,14 @@ const LoginClient = () => {
               onClick={signupModal.onOpen}
               secondary
             />
+
+            {/* or sign in with guest account */}
+            <button
+              onClick={handleGuestLogin}
+              className="bg-transparent text-neutral-500 dark:text-neutral-400 hover:underline"
+            >
+              Sign in as Guest
+            </button>
           </div>
         </div>
         <div className="mt-auto text-center text-neutral-300">

@@ -55,12 +55,14 @@ const HomeClient: React.FC<HomeClientProps> = ({
 
 
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar notifications={notifications} />
+    <div className="flex flex-col">
+      <div className="sticky top-0 z-40">
+        <Navbar notifications={notifications} />
+      </div>
 
       <div
         className="flex flex-row h-full
-        overflow-y-auto lg:lg-layout-grid
+         lg:lg-layout-grid overflow-y-visible
         bg-[#f0f2f5] dark:bg-[#18191a]"
       >
         {/* sidebar */}
@@ -68,17 +70,15 @@ const HomeClient: React.FC<HomeClientProps> = ({
 
         {/* post wall */}
         <div
-          className="grow flex flex-col gap-2 xs:gap-4 max-w-[680px] overflow-x-hidden 
-          lg:post-wall mx-auto lg:mx-4 px-2 xs:px-4 lg:px-0 py-2 xs:py-4"
+          className="lg:post-wall grow flex flex-col gap-2 xs:gap-4 max-w-[680px] overflow-x-hidden overflow-y-visible h-min
+          mx-auto lg:mx-4 px-2 xs:px-4 lg:px-0 py-2 xs:py-4"
         >
           {/* create post button */}
           <PostPrompt />
-
           {/* suggested friends */}
           {suggestedFriends && suggestedFriends.length > 0 && (
             <SuggestedFriends suggestedFriends={suggestedFriends} />
           )}
-
           {posts === null ? (
             // no posts
             <div className="p-4 text-neutral-500">No posts found...</div>

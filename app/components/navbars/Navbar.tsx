@@ -53,8 +53,8 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <div
-      className="z-40 flex flex-row px-4 py-2 lg:lg-layout-grid
-      bg-white dark:bg-[#242526]
+      className="sticky z-40 flex flex-row px-4 py-2 lg:lg-layout-grid
+      bg-white dark:bg-[#242526] border-t-0
       border-b border-neutral-300 dark:border-[#393b3d] shadow-sm"
     >
       {/* logo */}

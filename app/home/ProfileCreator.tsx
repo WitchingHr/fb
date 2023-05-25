@@ -127,7 +127,7 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
     heading = "Tell us about yourself";
     subheading = "This information will let your friends know more about you.";
     body = (
-      <div className="flex flex-col gap-4 max-w-[400px] h-screen">
+      <div className="flex flex-col gap-4 max-w-[400px]">
         <Input
           id="location"
           label="Location"
@@ -195,16 +195,16 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 xl:px-20">
+    <div className="max-w-[1440px] h-screen mx-auto px-4 sm:px-6 md:px-10 xl:px-20">
       <div
         className={`
-          grid grid-cols-1 lg:grid-cols-2 lg:h-screen
+          flex flex-col lg:h-screen
           mx-auto px-4 py-16 duration-1000
           ${showHeading ? 'opacity-100' : 'opacity-0'}
         `}
       >
         {/* heading */}
-        <div className="flex flex-col gap-4 pb-8 lg:mt-40 lg:pr-8">
+        <div className="flex flex-col gap-4 pb-8 lg:pr-8">
           <h1 className="text-2xl font-medium">
             {heading}
           </h1>
@@ -218,11 +218,11 @@ const ProfileCreator: React.FC<ProfileCreatorProps> = ({
             </p>
           )}
         </div>
-        <div className="max-w-[400px] mx-auto w-full">
+        <div className="max-w-[400px] w-full mt-10">
           {/* form */}
           <form
             onSubmit={handleSubmit(saveData)}
-            className="flex flex-col justify-between w-full h-full gap-4 mx-auto lg:justify-center"
+            className="flex flex-col justify-center gap-4 mx-auto"
           >
 
             {/* form body */}
